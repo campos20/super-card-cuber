@@ -1,0 +1,9 @@
+.cardBase {
+  background-color: white;
+  text-align: center;
+}
+
+.avatar {
+  height: 200px;
+  width: auto;
+}
