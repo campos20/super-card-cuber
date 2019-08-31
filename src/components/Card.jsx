@@ -9,14 +9,16 @@ class Card extends Component {
 
     this.getCompetitorInfo = props.getCompetitorInfo;
     this.isLoaded = props.isLoaded;
+
+    this.toShow = props.toShow;
   }
+
   // Map properties to show in the json in depth
+  // This is a helper function that says: hey, you are looking for totalRecods? I'll show you where it is.
   medals = ["gold", "silver", "bronze"];
   records = ["world", "continental", "national"];
   findResult = (item, type, spec) => {
     let competitor = this.getCompetitorInfo();
-    console.log("competitor");
-    console.log(competitor);
 
     if (item === "competitions") return competitor.competition_count;
 
@@ -27,21 +29,18 @@ class Card extends Component {
     if (item === "totalRecords") return competitor.records.total;
 
     if (isWcaEvent(item)) {
-      return competitor.personal_records[item][type][spec] || "-";
+      if (
+        !competitor.personal_records[item] ||
+        !competitor.personal_records[item][type] ||
+        !competitor.personal_records[item][type][spec]
+      ) {
+        return "-";
+      }
+      return competitor.personal_records[item][type][spec];
     }
 
     return "Error.";
   };
-
-  // WCA json is fetched with
-  // spec
-  // best -> PR
-  // NR, CR, WR for rankings
-  eventsAndSpecs = [
-    { id: "333", type: "single", spec: "best" },
-    { id: "222", type: "single", spec: "best" },
-    { id: "333fm", type: "average", spec: "best" }
-  ];
 
   // Some stats
   someStats = [
@@ -51,9 +50,7 @@ class Card extends Component {
   ];
 
   render() {
-    let competitorInfo = this.getCompetitorInfo();
-    console.log("Comp info");
-    console.log(competitorInfo);
+    let competitorInfo = this.props.competitorInfo;
     return this.isLoaded() ? (
       <div className="cardBase">
         <h4>{competitorInfo.person.name}</h4>
@@ -73,14 +70,14 @@ class Card extends Component {
                 </tr>
               ))}
 
-              {this.eventsAndSpecs.map(event => (
-                <tr key={event.id}>
+              {this.props.toShow.map(event => (
+                <tr key={event.id + "-" + event.type}>
                   <td className="capitalize">
                     {getName(event.id) + " " + event.type}
                   </td>
                   <td>
                     {timeConverter(
-                      this.findResult(event.id, event.type, event.spec),
+                      this.findResult(event.id, event.type, "best"),
                       event.id
                     )}
                   </td>
@@ -91,7 +88,7 @@ class Card extends Component {
         </div>
       </div>
     ) : (
-      <span>Loading {this.props.wcaId}...</span>
+      <span>Select a competitor.</span>
     );
   }
 }

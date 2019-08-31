@@ -7,16 +7,49 @@ import { isValidWcaId } from "../functions/wcaUtils";
 class Interface extends Component {
   constructor(props) {
     super(props);
-    let state = { wcaId: "", competitorInfo: {}, loaded: false };
+
+    // Default events to show
+    let toShow = [
+      { id: "333", type: "single" },
+      { id: "333", type: "average" }
+    ];
+
+    let state = {
+      wcaId: "",
+      competitorInfo: {},
+      loaded: false,
+      toShow: toShow
+    };
     this.state = state;
-    console.log("props");
-    console.log(props);
   }
+
+  isToShow = (event, type) => {
+    let result = false;
+    this.state.toShow.forEach(item => {
+      if (item.id === event && item.type === type) {
+        result = true;
+      }
+    });
+    return result;
+  };
+
+  toogleToShow = (event, type) => {
+    let toShow = this.state.toShow;
+    let state = this.state;
+
+    if (this.isToShow(event, type)) {
+      toShow = toShow.filter(x => x.id !== event || x.type !== type);
+    } else {
+      toShow.push({ id: event, type: type });
+    }
+
+    state.toShow = toShow;
+    this.setState(state);
+    console.log(this.state.toShow);
+  };
 
   searchCompetitor = wcaId => {
     if (isValidWcaId(wcaId)) {
-      console.log("searching", wcaId);
-
       this.fetchCompetitor(wcaId);
     }
   };
@@ -35,12 +68,11 @@ class Interface extends Component {
   personsEndpoint = "api/v0/persons/";
   fetchCompetitor = function(wcaId) {
     let url = this.baseApiUrl + this.personsEndpoint + wcaId;
+
     fetch(url)
       .then(res => res.json())
       .then(
         result => {
-          console.log("Result");
-          console.log(result);
           let state = this.state;
           state.competitorInfo = result;
           state.loaded = true;
@@ -63,12 +95,18 @@ class Interface extends Component {
         <div className="container">
           <div className="row">
             <div className="col-4">
-              <Input searchCompetitor={this.searchCompetitor} />
+              <Input
+                searchCompetitor={this.searchCompetitor}
+                isToShow={this.isToShow}
+                toogleToShow={this.toogleToShow}
+              />
             </div>
             <div className="col-8">
               <Card
                 getCompetitorInfo={this.getCompetitorInfo}
                 isLoaded={this.isLoaded}
+                competitorInfo={this.state.competitorInfo}
+                toShow={this.state.toShow}
               />
             </div>
           </div>

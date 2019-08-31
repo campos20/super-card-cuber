@@ -1,7 +1,20 @@
 #input-base {
   align-items: center;
+  text-align: center;
 }
 
 #wca-id-input {
   text-transform: uppercase;
+}
+
+.event-spec {
+  text-transform: capitalize;
+}
+
+.selected-to-show {
+  color: white;
+}
+
+.div-btn-control {
+  padding-top: 30px;
 }
