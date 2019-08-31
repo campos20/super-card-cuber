@@ -1,8 +1,7 @@
 const wcaEvents = [
   {
     id: "333",
-    name: "3x3x3 Cube",
-    commonName: "3x3x3"
+    name: "3x3x3 Cube"
   },
   {
     id: "222",
@@ -91,4 +90,8 @@ export function isWcaEvent(event) {
   return false;
 }
 
-export default { isWcaEvent, getName };
+export function isValidWcaId(wcaId) {
+  return /[0-9]{4}[A-Z]{4}[0-9]{2}/.test(wcaId);
+}
+
+export default { isWcaEvent, getName, isValidWcaId };

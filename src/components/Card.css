@@ -1,9 +1,19 @@
 .cardBase {
   background-color: white;
   text-align: center;
+  border: 1px solid black;
+  border-radius: 15px;
 }
 
 .avatar {
   height: 200px;
   width: auto;
+}
+
+.table {
+  table-layout: auto;
+}
+
+.capitalize {
+  text-transform: capitalize;
 }
