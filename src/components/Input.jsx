@@ -9,6 +9,8 @@ class Input extends Component {
     this.isToShow = props.isToShow;
     this.toogleToShow = props.toogleToShow;
 
+    this.toogleShowGeneralItem = props.toogleShowGeneralItem;
+
     let state = { wcaId: "" };
     this.state = state;
 
@@ -35,12 +37,15 @@ class Input extends Component {
     this.toogleToShow(event, spec);
   };
 
+  toogleGeneralItem = ev => {
+    let source = ev.target.getAttribute("value");
+
+    this.toogleShowGeneralItem(source);
+  };
+
   render() {
     return (
       <div id="input-base" className="container">
-        <div className="row">
-          <div className="col-12">Competitor:</div>
-        </div>
         <div className="row">
           <div className="col-12">
             <input
@@ -49,25 +54,62 @@ class Input extends Component {
               onChange={this.handleCompetitorChange}
               maxLength="10"
               id="wca-id-input"
+              placeholder="Select a Competitor"
             />
           </div>
         </div>
         <div className="row">
-          <div className="col-12 div-btn-control">
-            <button
-              className="btn btn-primary"
-              type="button"
-              data-toggle="collapse"
-              data-target="#collapseTable"
-              aria-expanded="false"
-              aria-controls="collapseTable"
-            >
-              Select events
-            </button>
+          <div className="col-12">
+            <div>
+              <button
+                className="btn btn-primary"
+                type="button"
+                data-toggle="collapse"
+                data-target="#collapse-items"
+                aria-expanded="false"
+                aria-controls="collapse-items"
+              >
+                General items
+              </button>
+              <button
+                className="btn btn-primary"
+                type="button"
+                data-toggle="collapse"
+                data-target="#collapse-events"
+                aria-expanded="false"
+                aria-controls="collapse-events"
+              >
+                Events
+              </button>
+            </div>
           </div>
         </div>
-        <div className="collapse" id="collapseTable">
-          <table className="table">
+        <div className="row">
+          <div className="col-12 align-items-center">
+            <div className="collapse" id="collapse-items">
+              <table className="table table-sm">
+                <tbody>
+                  {this.props.generalItems.map(event => (
+                    <tr key={event.id}>
+                      <td
+                        onClick={this.toogleGeneralItem}
+                        value={event.id}
+                        className={
+                          event.show ? "table-dark event-spec" : "event-spec"
+                        }
+                      >
+                        {event.name}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div className="collapse" id="collapse-events">
+          <table className="table table-sm">
             <tbody>
               {wcaEvents.map(event => (
                 <tr key={event.id}>

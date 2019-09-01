@@ -42,53 +42,54 @@ class Card extends Component {
     return "Error.";
   };
 
-  // Some stats
-  someStats = [
-    { id: "competitions", name: "Competitions" },
-    { id: "totalMedals", name: "Total Medals" },
-    { id: "totalRecords", name: "Total Records" }
-  ];
-
   render() {
     let competitorInfo = this.props.competitorInfo;
     return this.isLoaded() ? (
-      <div className="cardBase">
-        <h4>{competitorInfo.person.name}</h4>
+      <div id="card-base" className="container">
+        <div id="card" className="card">
+          <h4>{competitorInfo.person.name}</h4>
 
-        <div>
-          {/*this.state.competitor.person.avatar.url*/}
-          <img className="avatar" src={competitorInfo.person.avatar.url}></img>
-        </div>
+          <div>
+            {/*this.state.competitor.person.avatar.url*/}
+            <img
+              className="avatar"
+              src={competitorInfo.person.avatar.url}
+              alt="Competitor avatar."
+            ></img>
+          </div>
 
-        <div>
-          <table className="table table-bordered table-striped table-sm">
-            <tbody>
-              {this.someStats.map(stat => (
-                <tr key={stat.id}>
-                  <td>{stat.name}</td>
-                  <td>{this.findResult(stat.id)}</td>
-                </tr>
-              ))}
+          <div id="div-table-card">
+            <table className="table table-bordered table-striped table-sm">
+              <tbody>
+                {this.props.generalItems
+                  .filter(stat => stat.show)
+                  .map(stat => (
+                    <tr key={stat.id}>
+                      <td>{stat.name}</td>
+                      <td>{this.findResult(stat.id)}</td>
+                    </tr>
+                  ))}
 
-              {this.props.toShow.map(event => (
-                <tr key={event.id + "-" + event.type}>
-                  <td className="capitalize">
-                    {getName(event.id) + " " + event.type}
-                  </td>
-                  <td>
-                    {timeConverter(
-                      this.findResult(event.id, event.type, "best"),
-                      event.id
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                {this.props.toShow.map(event => (
+                  <tr key={event.id + "-" + event.type}>
+                    <td className="capitalize">
+                      {getName(event.id) + " " + event.type}
+                    </td>
+                    <td>
+                      {timeConverter(
+                        this.findResult(event.id, event.type, "best"),
+                        event.id
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     ) : (
-      <span>Select a competitor.</span>
+      <span></span>
     );
   }
 }

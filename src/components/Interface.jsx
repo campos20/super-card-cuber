@@ -8,20 +8,39 @@ class Interface extends Component {
   constructor(props) {
     super(props);
 
+    let generalItems = [
+      { id: "competitions", name: "Competitions", show: true },
+      { id: "totalMedals", name: "Total Medals", show: true },
+      { id: "totalRecords", name: "Total Records", show: true }
+    ];
+
     // Default events to show
     let toShow = [
-      { id: "333", type: "single" },
-      { id: "333", type: "average" }
+      { id: "333", type: "single", spec: "best" },
+      { id: "333", type: "average", spec: "best" }
     ];
 
     let state = {
       wcaId: "",
       competitorInfo: {},
       loaded: false,
+      generalItems: generalItems,
       toShow: toShow
     };
     this.state = state;
   }
+
+  toogleShowGeneralItem = item => {
+    let generalItems = this.state.generalItems;
+    generalItems.forEach(x => {
+      if (x.id === item) {
+        x.show = !x.show;
+      }
+    });
+    let state = this.state;
+    state.generalItems = generalItems;
+    this.setState(state);
+  };
 
   isToShow = (event, type) => {
     let result = false;
@@ -45,7 +64,6 @@ class Interface extends Component {
 
     state.toShow = toShow;
     this.setState(state);
-    console.log(this.state.toShow);
   };
 
   searchCompetitor = wcaId => {
@@ -67,6 +85,7 @@ class Interface extends Component {
   baseApiUrl = "https://www.worldcubeassociation.org/";
   personsEndpoint = "api/v0/persons/";
   fetchCompetitor = function(wcaId) {
+    wcaId = wcaId.toUpperCase();
     let url = this.baseApiUrl + this.personsEndpoint + wcaId;
 
     fetch(url)
@@ -94,23 +113,25 @@ class Interface extends Component {
 
         <div className="container">
           <div className="row">
-            <div className="col-4">
+            <div className="col-12">
               <Input
                 searchCompetitor={this.searchCompetitor}
                 isToShow={this.isToShow}
                 toogleToShow={this.toogleToShow}
-              />
-            </div>
-            <div className="col-8">
-              <Card
-                getCompetitorInfo={this.getCompetitorInfo}
-                isLoaded={this.isLoaded}
-                competitorInfo={this.state.competitorInfo}
-                toShow={this.state.toShow}
+                generalItems={this.state.generalItems}
+                toogleShowGeneralItem={this.toogleShowGeneralItem}
               />
             </div>
           </div>
         </div>
+
+        <Card
+          getCompetitorInfo={this.getCompetitorInfo}
+          isLoaded={this.isLoaded}
+          competitorInfo={this.state.competitorInfo}
+          toShow={this.state.toShow}
+          generalItems={this.state.generalItems}
+        />
       </div>
     );
   }

@@ -3,10 +3,6 @@
   text-align: center;
 }
 
-#wca-id-input {
-  text-transform: uppercase;
-}
-
 .event-spec {
   text-transform: capitalize;
 }
@@ -15,6 +11,14 @@
   color: white;
 }
 
-.div-btn-control {
-  padding-top: 30px;
+.btn-collapse {
+  padding: 20px;
+}
+
+#general-tems-btn-div {
+  background-color: yellow;
+}
+
+button {
+  margin: 5px;
 }
