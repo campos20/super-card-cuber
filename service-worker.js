@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/super-card-cuber/precache-manifest.3d8d05e01cff673dfebf5f9f682253de.js"
+  "/super-card-cuber/precache-manifest.f93320c822c33d3b0942332e2eb02f7b.js"
 );
 
 self.addEventListener('message', (event) => {

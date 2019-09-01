@@ -1,19 +1,19 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "6ce2f62b50fd376be43bfa102cc1720c",
+    "revision": "1073eac995c75cfe1afbdb6a28015844",
     "url": "/super-card-cuber/index.html"
   },
   {
-    "revision": "fda89a8d17261daad8d4",
-    "url": "/super-card-cuber/static/css/main.e7f0b1c9.chunk.css"
+    "revision": "18528657b1219cc6bffd",
+    "url": "/super-card-cuber/static/css/main.0cd3d86a.chunk.css"
   },
   {
     "revision": "990d224662fbbf770b9e",
     "url": "/super-card-cuber/static/js/2.941540bc.chunk.js"
   },
   {
-    "revision": "fda89a8d17261daad8d4",
-    "url": "/super-card-cuber/static/js/main.1ec8b0c2.chunk.js"
+    "revision": "18528657b1219cc6bffd",
+    "url": "/super-card-cuber/static/js/main.9e238e27.chunk.js"
   },
   {
     "revision": "ee4ae0cc4856e701ad3b",
