@@ -11,6 +11,8 @@ class Card extends Component {
     this.isLoaded = props.isLoaded;
 
     this.toShow = props.toShow;
+
+    this.getSpecName = props.getSpecName;
   }
 
   // Map properties to show in the json in depth
@@ -28,7 +30,8 @@ class Card extends Component {
     if (this.records.indexOf(item) >= 0) return competitor.records.item;
     if (item === "totalRecords") return competitor.records.total;
 
-    if (isWcaEvent(item)) {
+    // This will render eigher PR single or average
+    if ("best" === spec) {
       if (
         !competitor.personal_records[item] ||
         !competitor.personal_records[item][type] ||
@@ -36,10 +39,17 @@ class Card extends Component {
       ) {
         return "-";
       }
-      return competitor.personal_records[item][type][spec];
+
+      // TODO add type and spec to timeConverter
+      return timeConverter(
+        competitor.personal_records[item][type][spec],
+        type,
+        spec
+      );
     }
 
-    return "Error.";
+    // NR, CR or WR - rank.
+    return competitor.personal_records[item][type][spec];
   };
 
   render() {
@@ -71,16 +81,15 @@ class Card extends Component {
                   ))}
 
                 {this.props.toShow.map(event => (
-                  <tr key={event.id + "-" + event.type}>
+                  <tr key={event.id + "-" + event.type + "-" + event.spec}>
                     <td className="capitalize">
-                      {getName(event.id) + " " + event.type}
+                      {getName(event.id) +
+                        " " +
+                        event.type +
+                        " " +
+                        this.getSpecName(event.spec)}
                     </td>
-                    <td>
-                      {timeConverter(
-                        this.findResult(event.id, event.type, "best"),
-                        event.id
-                      )}
-                    </td>
+                    <td>{this.findResult(event.id, event.type, event.spec)}</td>
                   </tr>
                 ))}
               </tbody>

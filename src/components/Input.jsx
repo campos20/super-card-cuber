@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./Input.css";
-import { wcaEvents } from "../functions/wcaUtils";
+import { wcaEvents, getName } from "../functions/wcaUtils";
 
 class Input extends Component {
   constructor(props) {
@@ -15,6 +15,9 @@ class Input extends Component {
     this.state = state;
 
     this.searchCompetitor = props.searchCompetitor;
+
+    this.types = props.types;
+    this.specs = props.specs;
   }
 
   handleCompetitorChange = event => {
@@ -30,11 +33,12 @@ class Input extends Component {
   toogleSelectedEvent = ev => {
     // Vanilla javascript to help in getting the value assigned
     // For value, we assign like: 333-single, 333-average...
-    let source = ev.target.getAttribute("value").split("-");
-    let event = source[0];
-    let spec = source[1];
+    let source = ev.target.getAttribute("id").split("-");
+    let wcaEvent = source[0];
+    let type = source[1];
+    let spec = source[2];
 
-    this.toogleToShow(event, spec);
+    this.toogleToShow(wcaEvent, type, spec);
   };
 
   toogleGeneralItem = ev => {
@@ -95,7 +99,7 @@ class Input extends Component {
                         onClick={this.toogleGeneralItem}
                         value={event.id}
                         className={
-                          event.show ? "table-dark event-spec" : "event-spec"
+                          event.show ? "table-dark capitalize" : "capitalize"
                         }
                       >
                         {event.name}
@@ -110,23 +114,41 @@ class Input extends Component {
 
         <div className="collapse" id="collapse-events">
           <table className="table table-sm">
+            <thead>
+              <tr>
+                <th></th>
+                {this.types.map(type => (
+                  <th
+                    className="capitalize"
+                    colSpan={this.specs.length}
+                    key={type}
+                  >
+                    {type}
+                  </th>
+                ))}
+              </tr>
+            </thead>
             <tbody>
               {wcaEvents.map(event => (
                 <tr key={event.id}>
-                  <th>{event.id}</th>
-                  {event.spec.map(spec => (
-                    <td
-                      key={event.id + spec}
-                      value={event.id + "-" + spec}
-                      onClick={this.toogleSelectedEvent}
-                      className={
-                        this.isToShow(event.id, spec)
-                          ? "table-dark event-spec"
-                          : "event-spec"
-                      }
-                    >
-                      {spec}
-                    </td>
+                  <th>{getName(event.id)}</th>
+                  {event.spec.map(eventSpec => (
+                    <React.Fragment key={eventSpec}>
+                      {this.specs.map(spec => (
+                        <td
+                          className={
+                            this.isToShow(event.id, eventSpec, spec.id)
+                              ? "table-dark capitalize"
+                              : "capitalize"
+                          }
+                          id={event.id + "-" + eventSpec + "-" + spec.id}
+                          key={event.id + "-" + eventSpec + "-" + spec.id}
+                          onClick={this.toogleSelectedEvent}
+                        >
+                          {spec.name}
+                        </td>
+                      ))}
+                    </React.Fragment>
                   ))}
                 </tr>
               ))}

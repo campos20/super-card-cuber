@@ -67,17 +67,5 @@
       integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
       crossorigin="anonymous"
     ></script>
-
-    <script>
-      $(document).ready(function() {
-        console.log("ready");
-      });
-      $("#card-base").bind("DOMSubtreeModified", function(e) {
-        if (e.target.innerHTML.length > 0) {
-          // Content change handler
-        }
-        console.log(e);
-      });
-    </script>
   </body>
 </html>
