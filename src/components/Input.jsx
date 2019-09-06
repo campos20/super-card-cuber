@@ -91,7 +91,7 @@ class Input extends Component {
         <div className="row">
           <div className="col-12 align-items-center">
             <div className="collapse" id="collapse-items">
-              <table className="table table-sm">
+              <table className="table table-sm table-hover">
                 <tbody>
                   {this.props.generalItems.map(event => (
                     <tr key={event.id}>
@@ -113,7 +113,7 @@ class Input extends Component {
         </div>
 
         <div className="collapse" id="collapse-events">
-          <table className="table table-sm">
+          <table className="table table-sm table-hover">
             <thead>
               <tr>
                 <th></th>

@@ -22,3 +22,13 @@
 button {
   margin: 5px;
 }
+
+#collapse-events table tr td:nth-child(2),
+#collapse-events table tr th:nth-child(2) {
+  border-left: 1px solid lightgray;
+}
+
+#collapse-events table tr td:nth-child(5),
+#collapse-events table tr th:nth-child(2) {
+  border-right: 1px solid lightgray;
+}

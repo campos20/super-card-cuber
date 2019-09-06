@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./Card.css";
-import { isWcaEvent, getName } from "../functions/wcaUtils";
+import { getName } from "../functions/wcaUtils";
 import timeConverter from "../functions/timeUtils";
 
 class Card extends Component {
@@ -40,11 +40,12 @@ class Card extends Component {
         return "-";
       }
 
-      // TODO add type and spec to timeConverter
+      let wcaEvent = item;
+
       return timeConverter(
-        competitor.personal_records[item][type][spec],
-        type,
-        spec
+        competitor.personal_records[wcaEvent][type][spec],
+        wcaEvent,
+        type
       );
     }
 
