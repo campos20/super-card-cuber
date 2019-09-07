@@ -6,13 +6,20 @@
 #card {
   background-color: white;
   text-align: center;
-  border: 1px solid black;
+  border: 2px solid black;
   border-radius: 15px;
 }
 
-.avatar {
-  height: 200px;
-  width: auto;
+#competitor-name {
+  background-color: black;
+  color: white;
+  border-radius: 8px 8px 0px 0px;
+  vertical-align: middle;
+}
+
+#competitor-name h4 {
+  display: table-cell;
+  vertical-align: middle;
 }
 
 .capitalize {

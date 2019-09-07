@@ -20,7 +20,10 @@ class Interface extends Component {
 
     let generalItems = [
       { id: "competitions", name: "Competitions", show: true },
-      { id: "totalMedals", name: "Total Medals", show: true },
+      { id: "gold", name: "Gold", show: true },
+      { id: "silver", name: "Silver", show: true },
+      { id: "bronze", name: "Bronze", show: true },
+      { id: "totalMedals", name: "Total Medals", show: false },
       { id: "totalRecords", name: "Total Records", show: true }
     ];
 
@@ -101,6 +104,16 @@ class Interface extends Component {
     return this.state.loaded;
   };
 
+  getTotalItemsToShow = () => {
+    return this.toShow.length;
+  };
+
+  // Return the general item that will be rendered.
+  // Competitions, medals, specific medals or records.
+  getGeneralItemsFiltered = () => {
+    return this.state.generalItems.filter(x => x.show);
+  };
+
   // Search competitor info in the api
   baseApiUrl = "http://localhost:3000/";
   baseApiUrl = "https://www.worldcubeassociation.org/";
@@ -153,7 +166,7 @@ class Interface extends Component {
           isLoaded={this.isLoaded}
           competitorInfo={this.state.competitorInfo}
           toShow={this.state.toShow}
-          generalItems={this.state.generalItems}
+          getGeneralItemsFiltered={this.getGeneralItemsFiltered}
           getSpecName={this.getSpecName}
         />
       </div>

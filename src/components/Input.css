@@ -32,3 +32,7 @@ button {
 #collapse-events table tr th:nth-child(2) {
   border-right: 1px solid lightgray;
 }
+
+#wca-id-input {
+  text-align: center;
+}

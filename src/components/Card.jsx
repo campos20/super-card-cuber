@@ -11,6 +11,7 @@ class Card extends Component {
     this.isLoaded = props.isLoaded;
 
     this.toShow = props.toShow;
+    this.getGeneralItemsFiltered = props.getGeneralItemsFiltered;
 
     this.getSpecName = props.getSpecName;
   }
@@ -24,7 +25,8 @@ class Card extends Component {
 
     if (item === "competitions") return competitor.competition_count;
 
-    if (this.medals.indexOf(item) >= 0) return competitor.medals.item;
+    // Gold, silver or bronze
+    if (this.medals.indexOf(item) >= 0) return competitor.medals[item];
     if (item === "totalMedals") return competitor.medals.total;
 
     if (this.records.indexOf(item) >= 0) return competitor.records.item;
@@ -55,42 +57,75 @@ class Card extends Component {
 
   render() {
     let competitorInfo = this.props.competitorInfo;
+
+    let availableWidth = window.innerWidth;
+    let cardWidth = Math.min(400, availableWidth);
+    let cardHeight = Math.floor(cardWidth * 1.5);
+
+    let competitorNameHeight = Math.floor(cardHeight / 10);
+    let avatarHeight = Math.floor(cardHeight / 3);
+
+    let generalItemToShow = this.getGeneralItemsFiltered();
+    let toShow = this.props.toShow;
+
+    let itemRowHeight = Math.floor(
+      (cardHeight - competitorNameHeight - avatarHeight) /
+        (generalItemToShow.length + toShow.length)
+    );
+
     return this.isLoaded() ? (
       <div id="card-base" className="container">
-        <div id="card" className="card">
-          <h4>{competitorInfo.person.name}</h4>
+        <div
+          id="card"
+          className="card"
+          style={{ width: cardWidth, height: cardHeight }}
+        >
+          <div id="competitor-name">
+            <h4 style={{ height: competitorNameHeight }}>
+              {competitorInfo.person.name}
+            </h4>
+          </div>
 
-          <div>
-            {/*this.state.competitor.person.avatar.url*/}
-            <img
-              className="avatar"
-              src={competitorInfo.person.avatar.url}
-              alt="Competitor avatar."
-            ></img>
+          <div className="container">
+            <div className="row">
+              <div className="col-2"></div>
+              <div className="col-8">
+                <img
+                  className="avatar"
+                  src={competitorInfo.person.avatar.url}
+                  alt="Competitor avatar."
+                  style={{ height: avatarHeight }}
+                ></img>
+              </div>
+              <div className="col-2"></div>
+            </div>
           </div>
 
           <div id="div-table-card">
-            <table className="table table-bordered table-striped table-sm">
+            <table className="table table-sm">
               <tbody>
-                {this.props.generalItems
-                  .filter(stat => stat.show)
-                  .map(stat => (
-                    <tr key={stat.id}>
-                      <td>{stat.name}</td>
-                      <td>{this.findResult(stat.id)}</td>
-                    </tr>
-                  ))}
+                {generalItemToShow.map(stat => (
+                  <tr key={stat.id} style={{ height: itemRowHeight }}>
+                    <td className="align-middle">{stat.name}</td>
+                    <td className="align-middle">{this.findResult(stat.id)}</td>
+                  </tr>
+                ))}
 
-                {this.props.toShow.map(event => (
-                  <tr key={event.id + "-" + event.type + "-" + event.spec}>
-                    <td className="capitalize">
+                {toShow.map(event => (
+                  <tr
+                    key={event.id + "-" + event.type + "-" + event.spec}
+                    style={{ height: itemRowHeight }}
+                  >
+                    <td className="capitalize align-middle">
                       {getName(event.id) +
                         " " +
                         event.type +
                         " " +
                         this.getSpecName(event.spec)}
                     </td>
-                    <td>{this.findResult(event.id, event.type, event.spec)}</td>
+                    <td className="align-middle">
+                      {this.findResult(event.id, event.type, event.spec)}
+                    </td>
                   </tr>
                 ))}
               </tbody>
