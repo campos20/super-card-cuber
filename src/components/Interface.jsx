@@ -10,12 +10,11 @@ class Interface extends Component {
 
     this.types = ["single", "average"];
 
-    //
     this.specs = [
       { id: "best", name: "best" },
-      { id: "country_rank", name: "NR" },
-      { id: "continent_rank", name: "CR" },
-      { id: "world_rank", name: "WR" }
+      { id: "country_rank", name: "Natioanl Rank" },
+      { id: "continent_rank", name: "Continental Rank" },
+      { id: "world_rank", name: "World Rank" }
     ];
 
     let generalItems = [
@@ -41,6 +40,9 @@ class Interface extends Component {
       toShow: toShow
     };
     this.state = state;
+
+    // Hopefully, the view won't get messy if we use this.
+    this.CARD_LIMIT_LINE_NUMBER = 10;
   }
 
   /**
@@ -55,7 +57,15 @@ class Interface extends Component {
     let generalItems = this.state.generalItems;
     generalItems.forEach(x => {
       if (x.id === item) {
-        x.show = !x.show;
+        let oldFlag = x.show;
+
+        // This will limit the number of lines. It's ok to remove.
+        if (
+          oldFlag ||
+          this.getTotalItemsToShow() < this.CARD_LIMIT_LINE_NUMBER
+        ) {
+          x.show = !x.show;
+        }
       }
     });
     let state = this.state;
@@ -63,6 +73,8 @@ class Interface extends Component {
     this.setState(state);
   };
 
+  // This is for specific events
+  // Eg 333, single, best or 333, single, NR (rank)
   isToShow = (event, type, spec) => {
     let result = false;
     this.state.toShow.forEach(item => {
@@ -73,6 +85,7 @@ class Interface extends Component {
     return result;
   };
 
+  // Actually, this adds or remove events.
   toogleToShow = (wcaEvent, type, spec) => {
     let toShow = this.state.toShow;
     let state = this.state;
@@ -83,6 +96,10 @@ class Interface extends Component {
         x => x.id !== wcaEvent || x.type !== type || x.spec !== spec
       );
     } else {
+      // We do not allow adding events beyong the limit
+      if (this.getTotalItemsToShow() >= this.CARD_LIMIT_LINE_NUMBER) {
+        return;
+      }
       toShow.push({ id: wcaEvent, type: type, spec: spec });
     }
 
@@ -104,18 +121,18 @@ class Interface extends Component {
     return this.state.loaded;
   };
 
-  getTotalItemsToShow = () => {
-    return this.toShow.length;
-  };
-
   // Return the general item that will be rendered.
   // Competitions, medals, specific medals or records.
   getGeneralItemsFiltered = () => {
     return this.state.generalItems.filter(x => x.show);
   };
 
+  // This is the number of lines the card will have.
+  getTotalItemsToShow = () => {
+    return this.state.toShow.length + this.getGeneralItemsFiltered().length;
+  };
+
   // Search competitor info in the api
-  baseApiUrl = "http://localhost:3000/";
   baseApiUrl = "https://www.worldcubeassociation.org/";
   personsEndpoint = "api/v0/persons/";
   fetchCompetitor = function(wcaId) {
@@ -159,16 +176,18 @@ class Interface extends Component {
               />
             </div>
           </div>
+          <div className="row">
+            <Card
+              getCompetitorInfo={this.getCompetitorInfo}
+              isLoaded={this.isLoaded}
+              competitorInfo={this.state.competitorInfo}
+              toShow={this.state.toShow}
+              getGeneralItemsFiltered={this.getGeneralItemsFiltered}
+              getSpecName={this.getSpecName}
+              getTotalItemsToShow={this.getTotalItemsToShow}
+            />
+          </div>
         </div>
-
-        <Card
-          getCompetitorInfo={this.getCompetitorInfo}
-          isLoaded={this.isLoaded}
-          competitorInfo={this.state.competitorInfo}
-          toShow={this.state.toShow}
-          getGeneralItemsFiltered={this.getGeneralItemsFiltered}
-          getSpecName={this.getSpecName}
-        />
       </div>
     );
   }

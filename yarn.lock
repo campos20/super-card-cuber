@@ -7952,6 +7952,11 @@ react-app-polyfill@^1.0.2:
     regenerator-runtime "0.13.3"
     whatwg-fetch "3.0.0"
 
+react-country-flag@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/react-country-flag/-/react-country-flag-1.0.2.tgz#c15390c7a032ecc595dd89754b523c81a60c595f"
+  integrity sha512-VaH8vYGe27pLd4xIcWN+KLSs7W6Dm7hwNzXyisPzg+FFfX+q/vChE5J5fT0PEmIcjCxuRIBuVQL4DPuuMvRrvA==
+
 react-dev-utils@^9.0.3:
   version "9.0.3"
   resolved "https://registry.yarnpkg.com/react-dev-utils/-/react-dev-utils-9.0.3.tgz#7607455587abb84599451460eb37cef0b684131a"

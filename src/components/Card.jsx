@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "./Card.css";
 import { getName } from "../functions/wcaUtils";
 import timeConverter from "../functions/timeUtils";
+import Flag from "react-country-flag";
 
 class Card extends Component {
   constructor(props) {
@@ -12,6 +13,7 @@ class Card extends Component {
 
     this.toShow = props.toShow;
     this.getGeneralItemsFiltered = props.getGeneralItemsFiltered;
+    this.getTotalItemsToShow = props.getTotalItemsToShow;
 
     this.getSpecName = props.getSpecName;
   }
@@ -62,6 +64,8 @@ class Card extends Component {
     let cardWidth = Math.min(400, availableWidth);
     let cardHeight = Math.floor(cardWidth * 1.5);
 
+    let flagWidth = cardWidth / 6;
+
     let competitorNameHeight = Math.floor(cardHeight / 10);
     let avatarHeight = Math.floor(cardHeight / 3);
 
@@ -70,7 +74,7 @@ class Card extends Component {
 
     let itemRowHeight = Math.floor(
       (cardHeight - competitorNameHeight - avatarHeight) /
-        (generalItemToShow.length + toShow.length)
+        this.getTotalItemsToShow()
     );
 
     return this.isLoaded() ? (
@@ -80,10 +84,8 @@ class Card extends Component {
           className="card"
           style={{ width: cardWidth, height: cardHeight }}
         >
-          <div id="competitor-name">
-            <h4 style={{ height: competitorNameHeight }}>
-              {competitorInfo.person.name}
-            </h4>
+          <div id="competitor-name" style={{ height: competitorNameHeight }}>
+            <h4>{competitorInfo.person.name}</h4>
           </div>
 
           <div className="container">
@@ -97,7 +99,14 @@ class Card extends Component {
                   style={{ height: avatarHeight }}
                 ></img>
               </div>
-              <div className="col-2"></div>
+              <div className="col-2">
+                <Flag
+                  code={competitorInfo.person.country_iso2}
+                  format={"png"}
+                  pngSize={64}
+                  width={flagWidth}
+                />
+              </div>
             </div>
           </div>
 

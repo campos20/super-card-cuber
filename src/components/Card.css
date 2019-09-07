@@ -11,15 +11,12 @@
 }
 
 #competitor-name {
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
   background-color: black;
   color: white;
   border-radius: 8px 8px 0px 0px;
-  vertical-align: middle;
-}
-
-#competitor-name h4 {
-  display: table-cell;
-  vertical-align: middle;
 }
 
 .capitalize {
