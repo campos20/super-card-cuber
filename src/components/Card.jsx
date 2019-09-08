@@ -9,13 +9,16 @@ class Card extends Component {
     super(props);
 
     this.getCompetitorInfo = props.getCompetitorInfo;
-    this.isLoaded = props.isLoaded;
+    this.getStatus = props.getStatus;
 
     this.toShow = props.toShow;
     this.getGeneralItemsFiltered = props.getGeneralItemsFiltered;
     this.getTotalItemsToShow = props.getTotalItemsToShow;
 
     this.getSpecName = props.getSpecName;
+
+    this.getStatus = props.getStatus;
+    this.statusEnum = props.statusEnum;
   }
 
   // Map properties to show in the json in depth
@@ -58,93 +61,110 @@ class Card extends Component {
   };
 
   render() {
-    let competitorInfo = this.props.competitorInfo;
+    let status = this.getStatus();
 
-    let availableWidth = window.innerWidth;
-    let cardWidth = Math.min(400, availableWidth);
-    let cardHeight = Math.floor(cardWidth * 1.5);
+    if (status === this.statusEnum.LOADING) {
+      return (
+        <div className="spinner-border" role="status">
+          <span className="sr-only">Loading...</span>
+        </div>
+      );
+    }
 
-    let flagWidth = cardWidth / 6;
+    if (status === this.statusEnum.ERROR) {
+      return <div>Error</div>;
+    }
 
-    let competitorNameHeight = Math.floor(cardHeight / 10);
-    let avatarHeight = Math.floor(cardHeight / 3);
+    if (status === this.statusEnum.LOADED) {
+      let competitorInfo = this.props.competitorInfo;
 
-    let generalItemToShow = this.getGeneralItemsFiltered();
-    let toShow = this.props.toShow;
+      let availableWidth = window.innerWidth;
+      let cardWidth = Math.min(400, availableWidth);
+      let cardHeight = Math.floor(cardWidth * 1.5);
 
-    let itemRowHeight = Math.floor(
-      (cardHeight - competitorNameHeight - avatarHeight) /
-        this.getTotalItemsToShow()
-    );
+      let competitorNameHeight = Math.floor(cardHeight / 10);
+      let avatarHeight = Math.floor(cardHeight / 3);
 
-    return this.isLoaded() ? (
-      <div id="card-base" className="container">
+      let generalItemToShow = this.getGeneralItemsFiltered();
+      let toShow = this.props.toShow;
+
+      let itemRowHeight = Math.floor(
+        (cardHeight - competitorNameHeight - avatarHeight) /
+          this.getTotalItemsToShow()
+      );
+
+      return (
         <div
-          id="card"
-          className="card"
-          style={{ width: cardWidth, height: cardHeight }}
+          id="card-base"
+          className="container"
+          style={{
+            width: cardWidth,
+            height: cardHeight,
+            paddingLeft: 0,
+            paddingRight: 0
+          }}
         >
-          <div id="competitor-name" style={{ height: competitorNameHeight }}>
-            <h4>{competitorInfo.person.name}</h4>
-          </div>
+          <div id="card" className="card" style={{ height: cardHeight }}>
+            <div id="competitor-name" style={{ height: competitorNameHeight }}>
+              <h4>{competitorInfo.person.name}</h4>
+            </div>
 
-          <div className="container">
-            <div className="row">
-              <div className="col-2"></div>
-              <div className="col-8">
-                <img
-                  className="avatar"
-                  src={competitorInfo.person.avatar.url}
-                  alt="Competitor avatar."
-                  style={{ height: avatarHeight }}
-                ></img>
-              </div>
-              <div className="col-2">
-                <Flag
-                  code={competitorInfo.person.country_iso2}
-                  format={"png"}
-                  pngSize={64}
-                  width={flagWidth}
-                />
+            <div className="container">
+              <div className="row">
+                <div className="col-2"></div>
+                <div className="col-8">
+                  <img
+                    className="avatar"
+                    src={competitorInfo.person.avatar.url}
+                    alt="Competitor avatar."
+                    style={{ height: avatarHeight }}
+                  ></img>
+                </div>
+                <div className="col-2">
+                  <Flag code={competitorInfo.person.country_iso2} />
+                </div>
               </div>
             </div>
-          </div>
 
-          <div id="div-table-card">
-            <table className="table table-sm">
-              <tbody>
-                {generalItemToShow.map(stat => (
-                  <tr key={stat.id} style={{ height: itemRowHeight }}>
-                    <td className="align-middle">{stat.name}</td>
-                    <td className="align-middle">{this.findResult(stat.id)}</td>
-                  </tr>
-                ))}
+            <div id="div-table-card">
+              <table className="table table-sm">
+                <tbody>
+                  {generalItemToShow.map(stat => (
+                    <tr key={stat.id} style={{ height: itemRowHeight }}>
+                      <td className="align-middle">{stat.name}</td>
+                      <td className="align-middle">
+                        {this.findResult(stat.id)}
+                      </td>
+                    </tr>
+                  ))}
 
-                {toShow.map(event => (
-                  <tr
-                    key={event.id + "-" + event.type + "-" + event.spec}
-                    style={{ height: itemRowHeight }}
-                  >
-                    <td className="capitalize align-middle">
-                      {getName(event.id) +
-                        " " +
-                        event.type +
-                        " " +
-                        this.getSpecName(event.spec)}
-                    </td>
-                    <td className="align-middle">
-                      {this.findResult(event.id, event.type, event.spec)}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                  {toShow.map(event => (
+                    <tr
+                      key={event.id + "-" + event.type + "-" + event.spec}
+                      style={{ height: itemRowHeight }}
+                    >
+                      <td className="capitalize align-middle">
+                        {getName(event.id) +
+                          " " +
+                          event.type +
+                          " " +
+                          this.getSpecName(event.spec)}
+                      </td>
+                      <td className="align-middle">
+                        {this.findResult(event.id, event.type, event.spec)}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
-      </div>
-    ) : (
-      <span></span>
-    );
+      );
+    }
+
+    // init
+    return <span></span>;
   }
 }
 

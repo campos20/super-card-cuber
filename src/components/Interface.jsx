@@ -19,9 +19,9 @@ class Interface extends Component {
 
     let generalItems = [
       { id: "competitions", name: "Competitions", show: true },
-      { id: "gold", name: "Gold", show: true },
-      { id: "silver", name: "Silver", show: true },
-      { id: "bronze", name: "Bronze", show: true },
+      { id: "gold", name: "Golds", show: true },
+      { id: "silver", name: "Silvers", show: true },
+      { id: "bronze", name: "Bronzes", show: true },
       { id: "totalMedals", name: "Total Medals", show: false },
       { id: "totalRecords", name: "Total Records", show: true }
     ];
@@ -35,7 +35,7 @@ class Interface extends Component {
     let state = {
       wcaId: "",
       competitorInfo: {},
-      loaded: false,
+      status: null,
       generalItems: generalItems,
       toShow: toShow
     };
@@ -51,6 +51,16 @@ class Interface extends Component {
    */
   getSpecName = specId => {
     return this.specs.filter(x => x.id === specId)[0].name;
+  };
+
+  statusEnum = { INIT: 0, LOADING: 1, LOADED: 2, ERROR: -1 };
+  // This is about the competitor info.
+  // null: for not fetched
+  // loading
+  // loaded
+  // error
+  getStatus = () => {
+    return this.state.status;
   };
 
   toogleShowGeneralItem = item => {
@@ -109,6 +119,12 @@ class Interface extends Component {
 
   searchCompetitor = wcaId => {
     if (isValidWcaId(wcaId)) {
+      // This allows some feedback to the user.
+      // This information is shown in the card.
+      let state = this.state;
+      state.status = this.statusEnum.LOADING;
+      this.setState(state);
+
       this.fetchCompetitor(wcaId);
     }
   };
@@ -145,10 +161,13 @@ class Interface extends Component {
         result => {
           let state = this.state;
           state.competitorInfo = result;
-          state.loaded = true;
+          state.status = this.statusEnum.LOADED;
           this.setState(state);
         },
         error => {
+          let state = this.state;
+          state.status = this.statusEnum.ERROR;
+          this.setState(state);
           console.log(error);
         }
       );
@@ -173,19 +192,24 @@ class Interface extends Component {
                 toogleShowGeneralItem={this.toogleShowGeneralItem}
                 types={this.types}
                 specs={this.specs}
+                getStatus={this.getStatus}
+                statusEnum={this.statusEnum}
               />
             </div>
           </div>
           <div className="row">
-            <Card
-              getCompetitorInfo={this.getCompetitorInfo}
-              isLoaded={this.isLoaded}
-              competitorInfo={this.state.competitorInfo}
-              toShow={this.state.toShow}
-              getGeneralItemsFiltered={this.getGeneralItemsFiltered}
-              getSpecName={this.getSpecName}
-              getTotalItemsToShow={this.getTotalItemsToShow}
-            />
+            <div className="col-12" align="center">
+              <Card
+                getCompetitorInfo={this.getCompetitorInfo}
+                competitorInfo={this.state.competitorInfo}
+                toShow={this.state.toShow}
+                getGeneralItemsFiltered={this.getGeneralItemsFiltered}
+                getSpecName={this.getSpecName}
+                getTotalItemsToShow={this.getTotalItemsToShow}
+                statusEnum={this.statusEnum}
+                getStatus={this.getStatus}
+              />
+            </div>
           </div>
         </div>
       </div>

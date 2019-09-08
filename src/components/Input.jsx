@@ -18,6 +18,9 @@ class Input extends Component {
 
     this.types = props.types;
     this.specs = props.specs;
+
+    this.getStatus = props.getStatus;
+    this.statusEnum = props.statusEnum;
   }
 
   handleCompetitorChange = event => {
@@ -47,6 +50,13 @@ class Input extends Component {
     this.toogleShowGeneralItem(source);
   };
 
+  handleDownload = () => {
+    // This is here just for sanity.
+    // Download is handled with a <script> inside index.html
+  };
+
+  // The download button is hidden until it's working.
+  // For some reason, the avatar is not downloaded.
   render() {
     return (
       <div id="input-base" className="container">
@@ -84,6 +94,17 @@ class Input extends Component {
                 aria-controls="collapse-events"
               >
                 Events
+              </button>
+              <button
+                className="btn btn-primary"
+                type="button"
+                onClick={this.handleDownload}
+                id="btn-download"
+                disabled={this.getStatus() !== this.statusEnum.LOADED}
+                title="Download the card after it's rendered."
+                style={{ display: "none" }}
+              >
+                Download
               </button>
             </div>
           </div>
