@@ -104,8 +104,11 @@ class Card extends Component {
             paddingRight: 0
           }}
         >
-          <div id="card" className="card" style={{ height: cardHeight }}>
-            <div id="competitor-name" style={{ height: competitorNameHeight }}>
+          <div id="card" style={{ height: cardHeight }}>
+            <div
+              id="competitor-name"
+              style={{ height: competitorNameHeight, width: cardWidth }}
+            >
               <h4>{competitorInfo.person.name}</h4>
             </div>
 

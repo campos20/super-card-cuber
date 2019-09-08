@@ -148,6 +148,8 @@ class Interface extends Component {
     return this.state.toShow.length + this.getGeneralItemsFiltered().length;
   };
 
+  getMaxItemsToShow = () => this.CARD_LIMIT_LINE_NUMBER;
+
   // Search competitor info in the api
   baseApiUrl = "https://www.worldcubeassociation.org/";
   personsEndpoint = "api/v0/persons/";
@@ -194,6 +196,8 @@ class Interface extends Component {
                 specs={this.specs}
                 getStatus={this.getStatus}
                 statusEnum={this.statusEnum}
+                getTotalItemsToShow={this.getTotalItemsToShow}
+                getMaxItemsToShow={this.getMaxItemsToShow}
               />
             </div>
           </div>

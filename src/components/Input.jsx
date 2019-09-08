@@ -21,6 +21,8 @@ class Input extends Component {
 
     this.getStatus = props.getStatus;
     this.statusEnum = props.statusEnum;
+    this.getTotalItemsToShow = props.getTotalItemsToShow;
+    this.getMaxItemsToShow = props.getMaxItemsToShow;
   }
 
   handleCompetitorChange = event => {
@@ -56,7 +58,7 @@ class Input extends Component {
   };
 
   // The download button is hidden until it's working.
-  // For some reason, the avatar is not downloaded.
+  // For some reason, the avatar is not downloaded and it's not centered.
   render() {
     return (
       <div id="input-base" className="container">
@@ -140,12 +142,24 @@ class Input extends Component {
                 <th></th>
                 {this.types.map(type => (
                   <th
-                    className="capitalize"
+                    className="capitalize table-title-type"
                     colSpan={this.specs.length}
                     key={type}
                   >
                     {type}
                   </th>
+                ))}
+              </tr>
+              <tr>
+                <th></th>
+                {this.types.map(type => (
+                  <React.Fragment key={type}>
+                    {this.specs.map(spec => (
+                      <th key={spec.id} className="capitalize table-title-spec">
+                        {spec.name}
+                      </th>
+                    ))}
+                  </React.Fragment>
                 ))}
               </tr>
             </thead>
@@ -156,17 +170,23 @@ class Input extends Component {
                   {event.spec.map(eventSpec => (
                     <React.Fragment key={eventSpec}>
                       {this.specs.map(spec => (
-                        <td
-                          className={
-                            this.isToShow(event.id, eventSpec, spec.id)
-                              ? "table-dark capitalize"
-                              : "capitalize"
-                          }
-                          id={event.id + "-" + eventSpec + "-" + spec.id}
-                          key={event.id + "-" + eventSpec + "-" + spec.id}
-                          onClick={this.toogleSelectedEvent}
-                        >
-                          {spec.name}
+                        <td>
+                          <input
+                            type="checkbox"
+                            id={event.id + "-" + eventSpec + "-" + spec.id}
+                            key={event.id + "-" + eventSpec + "-" + spec.id}
+                            onClick={this.toogleSelectedEvent}
+                            disabled={
+                              !this.isToShow(event.id, eventSpec, spec.id) &&
+                              this.getTotalItemsToShow() >=
+                                this.getMaxItemsToShow()
+                            }
+                            checked={
+                              this.isToShow(event.id, eventSpec, spec.id)
+                                ? "true"
+                                : ""
+                            }
+                          ></input>
                         </td>
                       ))}
                     </React.Fragment>

@@ -63,7 +63,7 @@
       $(document).ready(evt => {
         let btnDownload = $("#btn-download");
         $("#btn-download").click(evt => {
-          let cardBase = document.getElementById("card");
+          let cardBase = document.getElementById("card-base");
 
           html2canvas(cardBase).then(canvas => {
             var img = canvas.toDataURL("image/png");
