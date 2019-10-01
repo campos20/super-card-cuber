@@ -37,17 +37,18 @@ class Card extends Component {
     if (this.records.indexOf(item) >= 0) return competitor.records.item;
     if (item === "totalRecords") return competitor.records.total;
 
+    // The next two stats depends on this.
+    if (
+      !competitor.personal_records[item] ||
+      !competitor.personal_records[item][type] ||
+      !competitor.personal_records[item][type][spec]
+    ) {
+      return "-";
+    }
+
     // This will render eigher PR single or average
     if ("best" === spec) {
-      if (
-        !competitor.personal_records[item] ||
-        !competitor.personal_records[item][type] ||
-        !competitor.personal_records[item][type][spec]
-      ) {
-        return "-";
-      }
-
-      let wcaEvent = item;
+      let wcaEvent = item; // Just for consistency
 
       return timeConverter(
         competitor.personal_records[wcaEvent][type][spec],

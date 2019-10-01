@@ -170,22 +170,22 @@ class Input extends Component {
                   {event.spec.map(eventSpec => (
                     <React.Fragment key={eventSpec}>
                       {this.specs.map(spec => (
-                        <td>
+                        <td key={event.id + eventSpec + spec.id}>
                           <input
                             type="checkbox"
                             id={event.id + "-" + eventSpec + "-" + spec.id}
                             key={event.id + "-" + eventSpec + "-" + spec.id}
-                            onClick={this.toogleSelectedEvent}
+                            onChange={this.toogleSelectedEvent}
                             disabled={
                               !this.isToShow(event.id, eventSpec, spec.id) &&
                               this.getTotalItemsToShow() >=
                                 this.getMaxItemsToShow()
                             }
-                            checked={
-                              this.isToShow(event.id, eventSpec, spec.id)
-                                ? "true"
-                                : ""
-                            }
+                            checked={this.isToShow(
+                              event.id,
+                              eventSpec,
+                              spec.id
+                            )}
                           ></input>
                         </td>
                       ))}
