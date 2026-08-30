@@ -1,0 +1,140 @@
+.tp {
+  width: min(420px, 92vw);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tp__label {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #9a9cb5;
+  font-weight: 600;
+}
+
+.tp__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tp__chip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+  color: #9a9cb5;
+  font-size: 0.8rem;
+  transition:
+    background 0.12s ease,
+    color 0.12s ease,
+    border-color 0.12s ease;
+}
+
+.tp__chip:hover {
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.tp__chip--active {
+  background: rgba(201, 162, 39, 0.16);
+  border-color: rgba(201, 162, 39, 0.5);
+  color: #f4f4f8;
+}
+
+/* The "+ Save current" chip is a single self-contained button, unlike the
+   template chips (which pair a select button with a sibling delete button). */
+.tp__chip--new {
+  color: #c9a227;
+  border-style: dashed;
+  padding: 7px 12px;
+  cursor: pointer;
+}
+
+.tp__chip-select {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 6px 7px 12px;
+  background: none;
+  border: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.tp__icon {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 1.5px solid currentColor;
+  flex-shrink: 0;
+}
+
+.tp__icon--classic {
+  border-radius: 50%;
+}
+
+.tp__icon--compact {
+  width: 18px;
+  height: 11px;
+  border-radius: 3px;
+}
+
+.tp__icon--poster {
+  width: 12px;
+  height: 16px;
+  border-radius: 2px;
+}
+
+.tp__delete {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 15px;
+  height: 15px;
+  margin: 0 8px 0 2px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: none;
+  color: inherit;
+  font: inherit;
+  opacity: 0.6;
+  cursor: pointer;
+}
+
+.tp__delete:hover {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.tp__create-form {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.tp__create-input {
+  width: 130px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(201, 162, 39, 0.5);
+  background: rgba(255, 255, 255, 0.06);
+  color: #f4f4f8;
+  font-size: 0.8rem;
+  outline: none;
+}
+
+.tp__create-save {
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: none;
+  background: #c9a227;
+  color: #17140a;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+}

@@ -1,0 +1,95 @@
+.cp {
+  width: min(420px, 92vw);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 16px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  animation: cp-enter 0.2s ease-out;
+}
+
+.cp__group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cp__label {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #9a9cb5;
+  font-weight: 600;
+}
+
+.cp__label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cp__actions {
+  display: flex;
+  gap: 10px;
+}
+
+.cp__link {
+  background: none;
+  border: none;
+  padding: 0;
+  color: #c9a227;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+}
+
+.cp__link:hover {
+  text-decoration: underline;
+}
+
+.cp__chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.cp__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: transparent;
+  color: #6c6e88;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition:
+    background 0.12s ease,
+    color 0.12s ease,
+    border-color 0.12s ease;
+}
+
+.cp__chip:hover {
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.cp__chip--active {
+  background: rgba(201, 162, 39, 0.16);
+  border-color: rgba(201, 162, 39, 0.5);
+  color: #f4f4f8;
+}
+
+@keyframes cp-enter {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -1,0 +1,101 @@
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 48px 16px 64px;
+  gap: 22px;
+}
+
+.app__header {
+  text-align: center;
+}
+
+.app__title {
+  margin: 0;
+  font-size: clamp(2rem, 5vw, 2.75rem);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  background: linear-gradient(120deg, #e8cf7a, #c9a227 50%, #e8cf7a);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.app__subtitle {
+  margin: 6px 0 0;
+  color: #9a9cb5;
+  font-size: 0.95rem;
+}
+
+.app__input {
+  width: min(320px, 90vw);
+  padding: 12px 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+  color: #f4f4f8;
+  font-size: 1rem;
+  text-align: center;
+  letter-spacing: 0.04em;
+  outline: none;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.app__input::placeholder {
+  color: #6c6e88;
+  letter-spacing: normal;
+}
+
+.app__input:focus {
+  border-color: #c9a227;
+  box-shadow: 0 0 0 4px rgba(201, 162, 39, 0.22);
+}
+
+.app__customize-toggle {
+  background: none;
+  border: none;
+  color: #9a9cb5;
+  font-size: 0.8rem;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+.app__customize-toggle:hover {
+  color: #f4f4f8;
+}
+
+.app__result {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  min-height: 60px;
+  width: 100%;
+}
+
+.app__message {
+  color: #9a9cb5;
+  font-size: 0.9rem;
+}
+
+.app__message--error {
+  color: #f87171;
+}
+
+.app__spinner {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 255, 255, 0.15);
+  border-top-color: #c9a227;
+  animation: app-spin 0.8s linear infinite;
+}
+
+@keyframes app-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

@@ -1,23 +1,335 @@
-#card-base {
+.sc-card {
+  --tier-a: #8c5e3c;
+  --tier-b: #c98a4b;
+  --tier-glow: rgba(201, 138, 75, 0.45);
+
+  width: min(340px, 92vw);
+  padding: 4px;
+  border-radius: 24px;
+  background: linear-gradient(145deg, var(--tier-a), var(--tier-b));
+  box-shadow:
+    0 20px 45px -15px rgba(0, 0, 0, 0.6),
+    0 0 40px -10px var(--tier-glow);
+  animation: sc-card-enter 0.4s ease-out;
+}
+
+.sc-card--silver {
+  --tier-a: #8a8f98;
+  --tier-b: #eef1f5;
+  --tier-glow: rgba(200, 210, 224, 0.5);
+}
+
+.sc-card--gold {
+  --tier-a: #a8791a;
+  --tier-b: #ffd76a;
+  --tier-glow: rgba(255, 209, 102, 0.55);
+}
+
+.sc-card--legendary {
+  --tier-b: #e4e4e7;
+  --tier-glow: rgba(228, 228, 231, 0.4);
+  background: linear-gradient(120deg, #52525b, #d4d4d8, #71717a, #52525b);
+  background-size: 300% 300%;
+  animation:
+    sc-card-enter 0.4s ease-out,
+    sc-card-shimmer 6s ease infinite;
+}
+
+.sc-card__inner {
+  border-radius: 20px;
+  background: radial-gradient(120% 140% at 50% -10%, #232842 0%, #12131f 65%);
+  color: #f4f4f8;
+  padding: 16px 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sc-card__header {
+  display: flex;
   align-items: center;
+  justify-content: space-between;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
-#card {
-  background-color: white;
+.sc-card__tier {
+  font-weight: 700;
+  color: var(--tier-b);
+}
+
+.sc-card__wca-id {
+  font-family: "Roboto Mono", ui-monospace, monospace;
+  color: #9a9cb5;
+}
+
+.sc-card__identity {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.sc-card__portrait {
+  position: relative;
+  align-self: center;
+  width: 128px;
+  height: 128px;
+}
+
+.sc-card__avatar {
+  width: 128px;
+  height: 128px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid var(--tier-b);
+  box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.05);
+  background: #1c1e30;
+}
+
+.sc-card__flag {
+  position: absolute;
+  right: -4px;
+  bottom: -4px;
+  font-size: 1.7rem;
+  line-height: 1;
+  background: #12131f;
+  border-radius: 50%;
+  padding: 4px;
+  border: 2px solid var(--tier-b);
+}
+
+.sc-card__name-plate {
   text-align: center;
-  border: 2px solid black;
-  border-radius: 15px;
 }
 
-#competitor-name {
-  display: table-cell;
-  text-align: center;
-  vertical-align: middle;
-  background-color: black;
-  color: white;
-  border-radius: 8px 8px 0px 0px;
+.sc-card__name {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: 0.01em;
 }
 
-.capitalize {
-  text-transform: capitalize;
+.sc-card__location {
+  margin: 2px 0 0;
+  font-size: 0.75rem;
+  color: #9a9cb5;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.sc-card__stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.sc-card__stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 8px 4px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.sc-card__stat-icon {
+  font-size: 1rem;
+}
+
+.sc-card__stat-value {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--tier-b);
+  font-variant-numeric: tabular-nums;
+}
+
+.sc-card__stat-label {
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #9a9cb5;
+}
+
+.sc-card__events {
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.sc-card__events-header,
+.sc-card__event-row {
+  display: grid;
+  grid-template-columns: 1fr 64px 64px;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+}
+
+.sc-card__events-header {
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #9a9cb5;
+  text-align: right;
+}
+
+.sc-card__events-header span:first-child {
+  text-align: left;
+}
+
+.sc-card__events-list {
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.sc-card__event-row {
+  font-size: 0.78rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.sc-card__event-row:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.sc-card__event-name {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sc-card__event-time {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+.sc-card__events-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sc-card__events-list::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 6px;
+}
+
+/* Compact layout: a denser card with the portrait and name side by side. */
+.sc-card.sc-card--layout-compact {
+  width: min(300px, 90vw);
+}
+
+.sc-card--layout-compact .sc-card__inner {
+  gap: 8px;
+  padding: 12px 14px 16px;
+}
+
+.sc-card--layout-compact .sc-card__identity {
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+}
+
+.sc-card--layout-compact .sc-card__portrait {
+  width: 60px;
+  height: 60px;
+  flex-shrink: 0;
+}
+
+.sc-card--layout-compact .sc-card__avatar {
+  width: 60px;
+  height: 60px;
+  border-width: 2px;
+}
+
+.sc-card--layout-compact .sc-card__flag {
+  font-size: 1.05rem;
+  padding: 2px;
+}
+
+.sc-card--layout-compact .sc-card__name-plate {
+  text-align: left;
+}
+
+.sc-card--layout-compact .sc-card__name {
+  font-size: 1.05rem;
+}
+
+.sc-card--layout-compact .sc-card__stat {
+  padding: 6px 4px;
+}
+
+.sc-card--layout-compact .sc-card__events-list {
+  max-height: 140px;
+}
+
+/* Poster layout: a full-bleed photo with the name overlaid at the bottom. */
+.sc-card--layout-poster .sc-card__identity {
+  position: relative;
+  gap: 0;
+}
+
+.sc-card--layout-poster .sc-card__portrait {
+  width: 100%;
+  height: 230px;
+  align-self: stretch;
+}
+
+.sc-card--layout-poster .sc-card__avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 14px;
+  border: none;
+  box-shadow: none;
+}
+
+.sc-card--layout-poster .sc-card__flag {
+  top: 8px;
+  right: 8px;
+  bottom: auto;
+  font-size: 1.4rem;
+}
+
+.sc-card--layout-poster .sc-card__name-plate {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  text-align: left;
+  padding: 28px 14px 12px;
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.85), transparent);
+  border-radius: 0 0 14px 14px;
+}
+
+.sc-card--layout-poster .sc-card__location {
+  color: #d4d4d8;
+}
+
+@keyframes sc-card-enter {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes sc-card-shimmer {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }

@@ -1,22 +1,23 @@
-This project allows a user to show cards for a [WCA](https://www.worldcubeassociation.org/) speedcuber.
+# Super Card Cuber
 
-You can see a live demo [here](https://campos20.github.io/super-card-cuber/).
+![coverage](https://campos20.github.io/super-card-cuber/coverage-badge.svg)
 
-## Installing the Project
+Turn any [WCA](https://www.worldcubeassociation.org/) competitor's public results into a beautiful, shareable trading card. Enter a WCA ID, pick a layout, customize which stats and events show up, then copy the card to your clipboard or export it as a PNG.
 
-- Clone the project with `git clone https://github.com/campos20/super-card-cuber.git`.
-- Enter in the project folder.
-- Run `yarn install`.
-- Execute with `yarn start`.
+Live at [campos20.github.io/super-card-cuber](https://campos20.github.io/super-card-cuber/).
 
-Use a browser to navigate to http://localhost:3000 (or another port that appears after `yarn start`).
+## Development
 
-## Usage
+```bash
+npm install
+npm run dev
+```
 
-Type a WCA ID in the field "Select a competitor". If the WCA ID is valid, you will see a card with some stats. You can customize the stats by selecting which event to show and general items (competitions, medals, records).
+## Scripts
 
-The data is fetched from the WCA website API.
-
-## How It Works
-
-This project was built with React, layout uses Bootstrap, data is fetched from WCA website.
+- `npm run dev` — start the local dev server
+- `npm run build` — type-check and build for production
+- `npm run lint` — run ESLint
+- `npm run test` — run the test suite once
+- `npm run test:watch` — run tests in watch mode
+- `npm run coverage` — run tests with a coverage report
