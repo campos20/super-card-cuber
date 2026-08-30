@@ -10,6 +10,8 @@ interface Props {
   onToggleEvent: (id: string) => void;
   onShowAllEvents: () => void;
   onHideAllEvents: () => void;
+  showIcons: boolean;
+  onToggleIcons: () => void;
 }
 
 export const CustomizePanel = ({
@@ -20,6 +22,8 @@ export const CustomizePanel = ({
   onToggleEvent,
   onShowAllEvents,
   onHideAllEvents,
+  showIcons,
+  onToggleIcons,
 }: Props) => {
   return (
     <div className="cp">
@@ -45,10 +49,18 @@ export const CustomizePanel = ({
           <div className="cp__label-row">
             <span className="cp__label">Events</span>
             <div className="cp__actions">
-              <button type="button" className="cp__link" onClick={onShowAllEvents}>
+              <button
+                type="button"
+                className="cp__link"
+                onClick={onShowAllEvents}
+              >
                 All
               </button>
-              <button type="button" className="cp__link" onClick={onHideAllEvents}>
+              <button
+                type="button"
+                className="cp__link"
+                onClick={onHideAllEvents}
+              >
                 None
               </button>
             </div>
@@ -62,12 +74,32 @@ export const CustomizePanel = ({
                 aria-pressed={!hiddenEvents.has(event.id)}
                 onClick={() => onToggleEvent(event.id)}
               >
-                <span aria-hidden="true">{event.icon}</span> {event.name}
+                <span
+                  className={`cubing-icon event-${event.id}`}
+                  aria-hidden="true"
+                />
+                {event.name}
               </button>
             ))}
           </div>
         </div>
       )}
+
+      <div className="cp__group">
+        <div className="cp__label-row">
+          <span className="cp__label">Misc</span>
+        </div>
+        <div className="cp__chip-row">
+          <button
+            type="button"
+            className={`cp__chip ${showIcons ? "cp__chip--active" : ""}`}
+            aria-pressed={showIcons}
+            onClick={onToggleIcons}
+          >
+            Show icons
+          </button>
+        </div>
+      </div>
     </div>
   );
 };

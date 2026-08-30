@@ -16,12 +16,12 @@ export interface StatDef {
 
 // General card stats, in display order. Any of these can be toggled off.
 export const GENERAL_STATS: StatDef[] = [
-  { id: "competitions", label: "Comps", icon: "🏆" },
-  { id: "solves", label: "Solves", icon: "⏱️" },
-  { id: "records", label: "Records", icon: "📜" },
   { id: "gold", label: "Gold", icon: "🥇" },
   { id: "silver", label: "Silver", icon: "🥈" },
   { id: "bronze", label: "Bronze", icon: "🥉" },
+  { id: "competitions", label: "Comps", icon: "🏆" },
+  { id: "solves", label: "Solves", icon: "⏱️" },
+  { id: "records", label: "Records", icon: "📜" },
 ];
 
 export const getStatValue = (

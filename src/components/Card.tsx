@@ -9,6 +9,7 @@ interface Props {
   competitor: CompetitorInfoDto;
   hiddenStats?: ReadonlySet<StatId>;
   hiddenEvents?: ReadonlySet<string>;
+  showIcons?: boolean;
 }
 
 type Tier = "bronze" | "silver" | "gold" | "legendary";
@@ -32,6 +33,7 @@ export const Card = ({
   competitor,
   hiddenStats = new Set(),
   hiddenEvents = new Set(),
+  showIcons = true,
 }: Props) => {
   const { person, medals, records } = competitor;
   const tier = getTier(medals.total);
@@ -74,7 +76,7 @@ export const Card = ({
             {visibleStats.map((stat) => (
               <Stat
                 key={stat.id}
-                icon={stat.icon}
+                icon={showIcons ? stat.icon : undefined}
                 label={stat.label}
                 value={getStatValue(competitor, stat.id)}
                 title={
@@ -100,7 +102,12 @@ export const Card = ({
                 return (
                   <div className="sc-card__event-row" key={event.id}>
                     <span className="sc-card__event-name">
-                      <span aria-hidden="true">{event.icon}</span>
+                      {showIcons && (
+                        <span
+                          className={`cubing-icon event-${event.id} sc-card__event-icon`}
+                          aria-hidden="true"
+                        />
+                      )}
                       {event.name}
                     </span>
                     <span className="sc-card__event-time">
@@ -125,7 +132,7 @@ export const Card = ({
 };
 
 interface StatProps {
-  icon: string;
+  icon?: string;
   label: string;
   value: number;
   title?: string;
@@ -133,9 +140,11 @@ interface StatProps {
 
 const Stat = ({ icon, label, value, title }: StatProps) => (
   <div className="sc-card__stat" title={title}>
-    <span className="sc-card__stat-icon" aria-hidden="true">
-      {icon}
-    </span>
+    {icon && (
+      <span className="sc-card__stat-icon" aria-hidden="true">
+        {icon}
+      </span>
+    )}
     <span className="sc-card__stat-value">{value}</span>
     <span className="sc-card__stat-label">{label}</span>
   </div>

@@ -24,6 +24,7 @@ export const App = () => {
   const [hiddenEvents, setHiddenEvents] = useState<ReadonlySet<string>>(
     new Set(),
   );
+  const [showIcons, setShowIcons] = useState(true);
 
   const isValid = isValidWcaId(competitorId);
 
@@ -117,6 +118,8 @@ export const App = () => {
           onHideAllEvents={() =>
             setHiddenEvents(new Set(availableEvents.map((event) => event.id)))
           }
+          showIcons={showIcons}
+          onToggleIcons={() => setShowIcons((prev) => !prev)}
         />
       )}
 
@@ -139,6 +142,7 @@ export const App = () => {
             competitor={loadedCompetitor}
             hiddenStats={hiddenStats}
             hiddenEvents={hiddenEvents}
+            showIcons={showIcons}
           />
         )}
       </div>
