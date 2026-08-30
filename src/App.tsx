@@ -31,7 +31,7 @@ const DEFAULT_HIDDEN_EVENTS = new Set(
 
 export const App = () => {
   const cardRef = useRef<HTMLDivElement>(null);
-  const [competitorId, setCompetitorId] = useState("2015CAMP17");
+  const [competitorId, setCompetitorId] = useState("");
   const [result, setResult] = useState<FetchResult | null>(null);
   const [isCustomizing, setIsCustomizing] = useState(false);
   const [hiddenStats, setHiddenStats] = useState<ReadonlySet<StatId>>(
