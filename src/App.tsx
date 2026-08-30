@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react";
 import { isValidWcaId } from "./lib/wca.util";
 import { fetchCompetitorInfo } from "./lib/wca.api";
+import type { CompetitorInfoDto } from "./lib/dto";
+import { Card } from "./components/Card";
 
 export const App = () => {
   const [competitorId, setCompetitorId] = useState("2015CAMP17");
+  const [competitorInfo, setCompetitorInfo] =
+    useState<CompetitorInfoDto | null>(null);
 
   useEffect(() => {
     const isValid = isValidWcaId(competitorId);
@@ -11,7 +15,7 @@ export const App = () => {
 
     if (isValid) {
       fetchCompetitorInfo(competitorId).then((data) => {
-        console.log(data);
+        setCompetitorInfo(data);
       });
     }
   }, [competitorId]);
@@ -24,6 +28,7 @@ export const App = () => {
         value={competitorId}
         onChange={(e) => setCompetitorId(e.target.value)}
       />
+      {!!competitorInfo && <Card competitor={competitorInfo} />}
     </div>
   );
 };
