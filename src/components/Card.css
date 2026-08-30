@@ -26,14 +26,9 @@
 }
 
 .sc-card--legendary {
-  --tier-glow: rgba(168, 85, 247, 0.55);
-  background: linear-gradient(
-    120deg,
-    #7c3aed,
-    #ec4899,
-    #06b6d4,
-    #7c3aed
-  );
+  --tier-b: #e4e4e7;
+  --tier-glow: rgba(228, 228, 231, 0.4);
+  background: linear-gradient(120deg, #52525b, #d4d4d8, #71717a, #52525b);
   background-size: 300% 300%;
   animation:
     sc-card-enter 0.4s ease-out,

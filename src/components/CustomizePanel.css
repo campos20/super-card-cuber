@@ -39,7 +39,7 @@
   background: none;
   border: none;
   padding: 0;
-  color: #a855f7;
+  color: #c9a227;
   font-size: 0.68rem;
   text-transform: uppercase;
   letter-spacing: 0.06em;
@@ -78,8 +78,8 @@
 }
 
 .cp__chip--active {
-  background: rgba(168, 85, 247, 0.18);
-  border-color: rgba(168, 85, 247, 0.5);
+  background: rgba(201, 162, 39, 0.16);
+  border-color: rgba(201, 162, 39, 0.5);
   color: #f4f4f8;
 }
 
