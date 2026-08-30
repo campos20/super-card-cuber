@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { isValidWcaId } from "./lib/wca.util";
 import { fetchCompetitorInfo } from "./lib/wca.api";
 import type { CompetitorInfoDto } from "./lib/dto";
@@ -13,6 +13,7 @@ import {
 } from "./lib/templates";
 import { wcaEvents } from "./lib/wca.events";
 import { Card } from "./components/Card";
+import { CardActions } from "./components/CardActions";
 import { CustomizePanel } from "./components/CustomizePanel";
 import { TemplatePicker } from "./components/TemplatePicker";
 import "./App.css";
@@ -29,6 +30,7 @@ const DEFAULT_HIDDEN_EVENTS = new Set(
 );
 
 export const App = () => {
+  const cardRef = useRef<HTMLDivElement>(null);
   const [competitorId, setCompetitorId] = useState("2015CAMP17");
   const [result, setResult] = useState<FetchResult | null>(null);
   const [isCustomizing, setIsCustomizing] = useState(false);
@@ -204,13 +206,20 @@ export const App = () => {
           </p>
         )}
         {loadedCompetitor && (
-          <Card
-            competitor={loadedCompetitor}
-            hiddenStats={hiddenStats}
-            hiddenEvents={hiddenEvents}
-            showIcons={showIcons}
-            layout={layout}
-          />
+          <>
+            <Card
+              ref={cardRef}
+              competitor={loadedCompetitor}
+              hiddenStats={hiddenStats}
+              hiddenEvents={hiddenEvents}
+              showIcons={showIcons}
+              layout={layout}
+            />
+            <CardActions
+              cardRef={cardRef}
+              fileName={`${loadedCompetitor.person.wca_id}-card.png`}
+            />
+          </>
         )}
       </div>
     </div>

@@ -1,3 +1,4 @@
+import type { Ref } from "react";
 import type { CompetitorInfoDto } from "../lib/dto";
 import { flagEmoji } from "../lib/flag.util";
 import { GENERAL_STATS, getStatValue, type StatId } from "../lib/stats";
@@ -12,6 +13,7 @@ interface Props {
   hiddenEvents?: ReadonlySet<string>;
   showIcons?: boolean;
   layout?: Layout;
+  ref?: Ref<HTMLDivElement>;
 }
 
 type Tier = "bronze" | "silver" | "gold" | "legendary";
@@ -37,6 +39,7 @@ export const Card = ({
   hiddenEvents = new Set(),
   showIcons = true,
   layout = "classic",
+  ref,
 }: Props) => {
   const { person, medals, records } = competitor;
   const tier = getTier(medals.total);
@@ -51,7 +54,7 @@ export const Card = ({
   );
 
   return (
-    <div className={`sc-card sc-card--${tier} sc-card--layout-${layout}`}>
+    <div ref={ref} className={`sc-card sc-card--${tier} sc-card--layout-${layout}`}>
       <div className="sc-card__inner">
         <header className="sc-card__header">
           <span className="sc-card__tier">{TIER_LABEL[tier]}</span>
