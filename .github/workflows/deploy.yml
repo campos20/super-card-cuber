@@ -1,0 +1,56 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run coverage
+      - name: Generate coverage badge
+        uses: wjervis7/vitest-badge-action@v1.0.0
+        if: success() || failure()
+        with:
+          result-type: lines
+          upload-badge: false
+          badge-path: coverage-badge.svg
+      - run: npm run build
+      # Fallback for GitHub Pages, which has no server-side rewrite: any
+      # unknown path 404s without this. Serving the app shell as the 404
+      # page keeps the card generator reachable from a bad or typo'd URL.
+      - run: cp dist/index.html dist/404.html
+      # Served alongside the app so the coverage badge in the README can
+      # point at a URL that always reflects the latest main build.
+      - run: cp coverage-badge.svg dist/coverage-badge.svg
+      - uses: actions/configure-pages@v6
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5

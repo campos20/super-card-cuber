@@ -3,7 +3,5 @@
 export const flagEmoji = (iso2: string): string => {
   return iso2
     .toUpperCase()
-    .replace(/./g, (char) =>
-      String.fromCodePoint(char.charCodeAt(0) + 127397),
-    );
+    .replace(/./g, (char) => String.fromCodePoint(char.charCodeAt(0) + 127397));
 };

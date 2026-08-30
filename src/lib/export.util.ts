@@ -75,7 +75,7 @@ const corsProxiedUrl = (url: string): string => {
 // Temporarily swaps cross-origin <img> sources inside `node` for CORS-safe
 // data URLs so html-to-image can inline them without tainting the canvas,
 // then restores the originals once `run` settles.
-const withCorsSafeImages = async <T,>(
+const withCorsSafeImages = async <T>(
   node: HTMLElement,
   run: () => Promise<T>,
 ): Promise<T> => {

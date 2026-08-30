@@ -54,7 +54,10 @@ export const Card = ({
   );
 
   return (
-    <div ref={ref} className={`sc-card sc-card--${tier} sc-card--layout-${layout}`}>
+    <div
+      ref={ref}
+      className={`sc-card sc-card--${tier} sc-card--layout-${layout}`}
+    >
       <div className="sc-card__inner">
         <header className="sc-card__header">
           <span className="sc-card__tier">{TIER_LABEL[tier]}</span>

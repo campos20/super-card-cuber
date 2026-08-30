@@ -12,8 +12,16 @@ body {
     Roboto,
     sans-serif;
   background:
-    radial-gradient(circle at 15% 10%, rgba(255, 255, 255, 0.06), transparent 45%),
-    radial-gradient(circle at 85% 0%, rgba(201, 162, 39, 0.14), transparent 40%),
+    radial-gradient(
+      circle at 15% 10%,
+      rgba(255, 255, 255, 0.06),
+      transparent 45%
+    ),
+    radial-gradient(
+      circle at 85% 0%,
+      rgba(201, 162, 39, 0.14),
+      transparent 40%
+    ),
     #0b0c14;
   background-attachment: fixed;
 }

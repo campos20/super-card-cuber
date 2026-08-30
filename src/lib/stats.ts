@@ -1,12 +1,7 @@
 import type { CompetitorInfoDto } from "./dto";
 
 export type StatId =
-  | "competitions"
-  | "gold"
-  | "silver"
-  | "bronze"
-  | "records"
-  | "solves";
+  "competitions" | "gold" | "silver" | "bronze" | "records" | "solves";
 
 export interface StatDef {
   id: StatId;
