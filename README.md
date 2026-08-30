@@ -1,22 +1,75 @@
-This project allows a user to show cards for a [WCA](https://www.worldcubeassociation.org/) speedcuber.
+# React + TypeScript + Vite
 
-You can see a live demo [here](https://campos20.github.io/super-card-cuber/).
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-## Installing the Project
+Currently, two official plugins are available:
 
-- Clone the project with `git clone https://github.com/campos20/super-card-cuber.git`.
-- Enter in the project folder.
-- Run `yarn install`.
-- Execute with `yarn start`.
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
 
-Use a browser to navigate to http://localhost:3000 (or another port that appears after `yarn start`).
+## React Compiler
 
-## Usage
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-Type a WCA ID in the field "Select a competitor". If the WCA ID is valid, you will see a card with some stats. You can customize the stats by selecting which event to show and general items (competitions, medals, records).
+## Expanding the ESLint configuration
 
-The data is fetched from the WCA website API.
+If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
 
-## How It Works
+```js
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
 
-This project was built with React, layout uses Bootstrap, data is fetched from WCA website.
+      // Remove tseslint.configs.recommended and replace with this
+      tseslint.configs.recommendedTypeChecked,
+      // Alternatively, use this for stricter rules
+      tseslint.configs.strictTypeChecked,
+      // Optionally, add this for stylistic rules
+      tseslint.configs.stylisticTypeChecked,
+
+      // Other configs...
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
+
+```
+
+You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+
+```js
+// eslint.config.js
+import reactX from 'eslint-plugin-react-x'
+import reactDom from 'eslint-plugin-react-dom'
+
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
+      // Enable lint rules for React
+      reactX.configs['recommended-typescript'],
+      // Enable lint rules for React DOM
+      reactDom.configs.recommended,
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
+
+```
