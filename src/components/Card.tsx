@@ -1,11 +1,14 @@
 import type { CompetitorInfoDto } from "../lib/dto";
 import { flagEmoji } from "../lib/flag.util";
+import { GENERAL_STATS, getStatValue, type StatId } from "../lib/stats";
 import { formatResult } from "../lib/time.util";
 import { wcaEvents } from "../lib/wca.events";
 import "./Card.css";
 
 interface Props {
   competitor: CompetitorInfoDto;
+  hiddenStats?: ReadonlySet<StatId>;
+  hiddenEvents?: ReadonlySet<string>;
 }
 
 type Tier = "bronze" | "silver" | "gold" | "legendary";
@@ -25,12 +28,21 @@ const getTier = (totalMedals: number): Tier => {
   return "bronze";
 };
 
-export const Card = ({ competitor }: Props) => {
+export const Card = ({
+  competitor,
+  hiddenStats = new Set(),
+  hiddenEvents = new Set(),
+}: Props) => {
   const { person, medals, records } = competitor;
   const tier = getTier(medals.total);
 
+  const visibleStats = GENERAL_STATS.filter(
+    (stat) => !hiddenStats.has(stat.id),
+  );
+
   const events = wcaEvents.filter(
-    (event) => competitor.personal_records[event.id],
+    (event) =>
+      competitor.personal_records[event.id] && !hiddenEvents.has(event.id),
   );
 
   return (
@@ -57,19 +69,23 @@ export const Card = ({ competitor }: Props) => {
           <p className="sc-card__location">{person.location}</p>
         </div>
 
-        <div className="sc-card__stats">
-          <Stat icon="🏆" label="Comps" value={competitor.competition_count} />
-          <Stat icon="🥇" label="Gold" value={medals.gold} />
-          <Stat icon="🥈" label="Silver" value={medals.silver} />
-          <Stat icon="🥉" label="Bronze" value={medals.bronze} />
-          <Stat
-            icon="📜"
-            label="Records"
-            value={records.total}
-            title={`National ${records.national} · Continental ${records.continental} · World ${records.world}`}
-          />
-          <Stat icon="⏱️" label="Solves" value={competitor.total_solves} />
-        </div>
+        {visibleStats.length > 0 && (
+          <div className="sc-card__stats">
+            {visibleStats.map((stat) => (
+              <Stat
+                key={stat.id}
+                icon={stat.icon}
+                label={stat.label}
+                value={getStatValue(competitor, stat.id)}
+                title={
+                  stat.id === "records"
+                    ? `National ${records.national} · Continental ${records.continental} · World ${records.world}`
+                    : undefined
+                }
+              />
+            ))}
+          </div>
+        )}
 
         {events.length > 0 && (
           <div className="sc-card__events">

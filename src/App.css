@@ -54,6 +54,19 @@
   box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.25);
 }
 
+.app__customize-toggle {
+  background: none;
+  border: none;
+  color: #9a9cb5;
+  font-size: 0.8rem;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+.app__customize-toggle:hover {
+  color: #f4f4f8;
+}
+
 .app__result {
   display: flex;
   justify-content: center;

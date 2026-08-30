@@ -2,7 +2,10 @@ import { useEffect, useState } from "react";
 import { isValidWcaId } from "./lib/wca.util";
 import { fetchCompetitorInfo } from "./lib/wca.api";
 import type { CompetitorInfoDto } from "./lib/dto";
+import type { StatId } from "./lib/stats";
+import { wcaEvents } from "./lib/wca.events";
 import { Card } from "./components/Card";
+import { CustomizePanel } from "./components/CustomizePanel";
 import "./App.css";
 
 interface FetchResult {
@@ -14,6 +17,13 @@ interface FetchResult {
 export const App = () => {
   const [competitorId, setCompetitorId] = useState("2015CAMP17");
   const [result, setResult] = useState<FetchResult | null>(null);
+  const [isCustomizing, setIsCustomizing] = useState(false);
+  const [hiddenStats, setHiddenStats] = useState<ReadonlySet<StatId>>(
+    new Set(),
+  );
+  const [hiddenEvents, setHiddenEvents] = useState<ReadonlySet<string>>(
+    new Set(),
+  );
 
   const isValid = isValidWcaId(competitorId);
 
@@ -46,6 +56,29 @@ export const App = () => {
       ? "loading"
       : result.status;
 
+  const loadedCompetitor = status === "loaded" ? result?.data : undefined;
+  const availableEvents = loadedCompetitor
+    ? wcaEvents.filter((event) => loadedCompetitor.personal_records[event.id])
+    : [];
+
+  const toggleStat = (id: StatId) => {
+    setHiddenStats((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
+
+  const toggleEvent = (id: string) => {
+    setHiddenEvents((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
+
   return (
     <div className="app">
       <header className="app__header">
@@ -63,6 +96,30 @@ export const App = () => {
         onChange={(e) => setCompetitorId(e.target.value.toUpperCase())}
       />
 
+      {status === "loaded" && (
+        <button
+          type="button"
+          className="app__customize-toggle"
+          onClick={() => setIsCustomizing((prev) => !prev)}
+        >
+          {isCustomizing ? "Hide options ▲" : "Add or remove items ▼"}
+        </button>
+      )}
+
+      {status === "loaded" && isCustomizing && (
+        <CustomizePanel
+          hiddenStats={hiddenStats}
+          onToggleStat={toggleStat}
+          events={availableEvents}
+          hiddenEvents={hiddenEvents}
+          onToggleEvent={toggleEvent}
+          onShowAllEvents={() => setHiddenEvents(new Set())}
+          onHideAllEvents={() =>
+            setHiddenEvents(new Set(availableEvents.map((event) => event.id)))
+          }
+        />
+      )}
+
       <div className="app__result">
         {status === "loading" && (
           <div className="app__spinner" role="status" aria-label="Loading" />
@@ -77,8 +134,12 @@ export const App = () => {
             Couldn't find that competitor. Double-check the ID.
           </p>
         )}
-        {status === "loaded" && result?.data && (
-          <Card competitor={result.data} />
+        {loadedCompetitor && (
+          <Card
+            competitor={loadedCompetitor}
+            hiddenStats={hiddenStats}
+            hiddenEvents={hiddenEvents}
+          />
         )}
       </div>
     </div>

@@ -1,4 +1,4 @@
-interface WcaEvent {
+export interface WcaEvent {
   id: string;
   name: string;
   icon: string;
@@ -25,9 +25,3 @@ export const wcaEvents: WcaEvent[] = [
   { id: "555bf", name: "5x5x5 Blindfolded", icon: "🙈" },
   { id: "333mbf", name: "3x3x3 Multi-Blind", icon: "🙈" },
 ];
-
-export const getEventName = (eventId: string): string =>
-  wcaEvents.find((event) => event.id === eventId)?.name ?? eventId;
-
-export const getEventIcon = (eventId: string): string =>
-  wcaEvents.find((event) => event.id === eventId)?.icon ?? "🧩";
