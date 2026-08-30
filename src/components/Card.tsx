@@ -1,6 +1,7 @@
 import type { CompetitorInfoDto } from "../lib/dto";
 import { flagEmoji } from "../lib/flag.util";
 import { GENERAL_STATS, getStatValue, type StatId } from "../lib/stats";
+import type { Layout } from "../lib/templates";
 import { formatResult } from "../lib/time.util";
 import { wcaEvents } from "../lib/wca.events";
 import "./Card.css";
@@ -10,6 +11,7 @@ interface Props {
   hiddenStats?: ReadonlySet<StatId>;
   hiddenEvents?: ReadonlySet<string>;
   showIcons?: boolean;
+  layout?: Layout;
 }
 
 type Tier = "bronze" | "silver" | "gold" | "legendary";
@@ -34,6 +36,7 @@ export const Card = ({
   hiddenStats = new Set(),
   hiddenEvents = new Set(),
   showIcons = true,
+  layout = "classic",
 }: Props) => {
   const { person, medals, records } = competitor;
   const tier = getTier(medals.total);
@@ -48,27 +51,29 @@ export const Card = ({
   );
 
   return (
-    <div className={`sc-card sc-card--${tier}`}>
+    <div className={`sc-card sc-card--${tier} sc-card--layout-${layout}`}>
       <div className="sc-card__inner">
         <header className="sc-card__header">
           <span className="sc-card__tier">{TIER_LABEL[tier]}</span>
           <span className="sc-card__wca-id">{person.wca_id}</span>
         </header>
 
-        <div className="sc-card__portrait">
-          <img
-            className="sc-card__avatar"
-            src={person.avatar.url}
-            alt={`${person.name}'s avatar`}
-          />
-          <span className="sc-card__flag" title={person.country.name}>
-            {flagEmoji(person.country_iso2)}
-          </span>
-        </div>
+        <div className="sc-card__identity">
+          <div className="sc-card__portrait">
+            <img
+              className="sc-card__avatar"
+              src={person.avatar.url}
+              alt={`${person.name}'s avatar`}
+            />
+            <span className="sc-card__flag" title={person.country.name}>
+              {flagEmoji(person.country_iso2)}
+            </span>
+          </div>
 
-        <div className="sc-card__name-plate">
-          <h2 className="sc-card__name">{person.name}</h2>
-          <p className="sc-card__location">{person.location}</p>
+          <div className="sc-card__name-plate">
+            <h2 className="sc-card__name">{person.name}</h2>
+            <p className="sc-card__location">{person.location}</p>
+          </div>
         </div>
 
         {visibleStats.length > 0 && (

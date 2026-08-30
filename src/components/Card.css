@@ -64,6 +64,13 @@
   color: #9a9cb5;
 }
 
+.sc-card__identity {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
 .sc-card__portrait {
   position: relative;
   align-self: center;
@@ -211,6 +218,97 @@
 .sc-card__events-list::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.15);
   border-radius: 6px;
+}
+
+/* Compact layout: a denser card with the portrait and name side by side. */
+.sc-card.sc-card--layout-compact {
+  width: min(300px, 90vw);
+}
+
+.sc-card--layout-compact .sc-card__inner {
+  gap: 8px;
+  padding: 12px 14px 16px;
+}
+
+.sc-card--layout-compact .sc-card__identity {
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+}
+
+.sc-card--layout-compact .sc-card__portrait {
+  width: 60px;
+  height: 60px;
+  flex-shrink: 0;
+}
+
+.sc-card--layout-compact .sc-card__avatar {
+  width: 60px;
+  height: 60px;
+  border-width: 2px;
+}
+
+.sc-card--layout-compact .sc-card__flag {
+  font-size: 1.05rem;
+  padding: 2px;
+}
+
+.sc-card--layout-compact .sc-card__name-plate {
+  text-align: left;
+}
+
+.sc-card--layout-compact .sc-card__name {
+  font-size: 1.05rem;
+}
+
+.sc-card--layout-compact .sc-card__stat {
+  padding: 6px 4px;
+}
+
+.sc-card--layout-compact .sc-card__events-list {
+  max-height: 140px;
+}
+
+/* Poster layout: a full-bleed photo with the name overlaid at the bottom. */
+.sc-card--layout-poster .sc-card__identity {
+  position: relative;
+  gap: 0;
+}
+
+.sc-card--layout-poster .sc-card__portrait {
+  width: 100%;
+  height: 230px;
+  align-self: stretch;
+}
+
+.sc-card--layout-poster .sc-card__avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 14px;
+  border: none;
+  box-shadow: none;
+}
+
+.sc-card--layout-poster .sc-card__flag {
+  top: 8px;
+  right: 8px;
+  bottom: auto;
+  font-size: 1.4rem;
+}
+
+.sc-card--layout-poster .sc-card__name-plate {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  text-align: left;
+  padding: 28px 14px 12px;
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.85), transparent);
+  border-radius: 0 0 14px 14px;
+}
+
+.sc-card--layout-poster .sc-card__location {
+  color: #d4d4d8;
 }
 
 @keyframes sc-card-enter {

@@ -3,9 +3,18 @@ import { isValidWcaId } from "./lib/wca.util";
 import { fetchCompetitorInfo } from "./lib/wca.api";
 import type { CompetitorInfoDto } from "./lib/dto";
 import type { StatId } from "./lib/stats";
+import {
+  BUILTIN_TEMPLATES,
+  createTemplateId,
+  loadCustomTemplates,
+  saveCustomTemplates,
+  type Layout,
+  type Template,
+} from "./lib/templates";
 import { wcaEvents } from "./lib/wca.events";
 import { Card } from "./components/Card";
 import { CustomizePanel } from "./components/CustomizePanel";
+import { TemplatePicker } from "./components/TemplatePicker";
 import "./App.css";
 
 interface FetchResult {
@@ -25,6 +34,11 @@ export const App = () => {
     new Set(),
   );
   const [showIcons, setShowIcons] = useState(true);
+  const [layout, setLayout] = useState<Layout>("classic");
+  const [activeTemplateId, setActiveTemplateId] = useState("classic");
+  const [customTemplates, setCustomTemplates] = useState<Template[]>(() =>
+    loadCustomTemplates(),
+  );
 
   const isValid = isValidWcaId(competitorId);
 
@@ -80,6 +94,45 @@ export const App = () => {
     });
   };
 
+  const templates = [...BUILTIN_TEMPLATES, ...customTemplates];
+
+  const applyTemplate = (template: Template) => {
+    setLayout(template.layout);
+    if (template.builtin) {
+      setHiddenStats(new Set());
+      setHiddenEvents(new Set());
+      setShowIcons(true);
+    } else {
+      setHiddenStats(new Set(template.hiddenStats));
+      setHiddenEvents(new Set(template.hiddenEvents));
+      setShowIcons(template.showIcons);
+    }
+    setActiveTemplateId(template.id);
+  };
+
+  const createTemplate = (name: string) => {
+    const template: Template = {
+      id: createTemplateId(),
+      name,
+      layout,
+      builtin: false,
+      hiddenStats: Array.from(hiddenStats),
+      hiddenEvents: Array.from(hiddenEvents),
+      showIcons,
+    };
+    const next = [...customTemplates, template];
+    setCustomTemplates(next);
+    saveCustomTemplates(next);
+    setActiveTemplateId(template.id);
+  };
+
+  const deleteTemplate = (id: string) => {
+    const next = customTemplates.filter((template) => template.id !== id);
+    setCustomTemplates(next);
+    saveCustomTemplates(next);
+    if (activeTemplateId === id) setActiveTemplateId("classic");
+  };
+
   return (
     <div className="app">
       <header className="app__header">
@@ -96,6 +149,16 @@ export const App = () => {
         value={competitorId}
         onChange={(e) => setCompetitorId(e.target.value.toUpperCase())}
       />
+
+      {status === "loaded" && (
+        <TemplatePicker
+          templates={templates}
+          activeTemplateId={activeTemplateId}
+          onSelect={applyTemplate}
+          onCreate={createTemplate}
+          onDelete={deleteTemplate}
+        />
+      )}
 
       {status === "loaded" && (
         <button
@@ -143,6 +206,7 @@ export const App = () => {
             hiddenStats={hiddenStats}
             hiddenEvents={hiddenEvents}
             showIcons={showIcons}
+            layout={layout}
           />
         )}
       </div>
