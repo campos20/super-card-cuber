@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { isValidWcaId } from "./lib/wca.util";
+import { fetchCompetitorInfo } from "./lib/wca.api";
 
 export const App = () => {
   const [competitorId, setCompetitorId] = useState("2015CAMP17");
@@ -7,6 +8,12 @@ export const App = () => {
   useEffect(() => {
     const isValid = isValidWcaId(competitorId);
     console.log(`Is the competitor ID valid? ${isValid}`);
+
+    if (isValid) {
+      fetchCompetitorInfo(competitorId).then((data) => {
+        console.log(data);
+      });
+    }
   }, [competitorId]);
 
   return (
