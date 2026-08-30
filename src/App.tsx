@@ -23,6 +23,11 @@ interface FetchResult {
   data?: CompetitorInfoDto;
 }
 
+// Show only the 3x3x3 Cube event until the user picks more.
+const DEFAULT_HIDDEN_EVENTS = new Set(
+  wcaEvents.filter((event) => event.id !== "333").map((event) => event.id),
+);
+
 export const App = () => {
   const [competitorId, setCompetitorId] = useState("2015CAMP17");
   const [result, setResult] = useState<FetchResult | null>(null);
@@ -31,7 +36,7 @@ export const App = () => {
     new Set(),
   );
   const [hiddenEvents, setHiddenEvents] = useState<ReadonlySet<string>>(
-    new Set(),
+    () => DEFAULT_HIDDEN_EVENTS,
   );
   const [showIcons, setShowIcons] = useState(true);
   const [layout, setLayout] = useState<Layout>("classic");
@@ -191,9 +196,7 @@ export const App = () => {
           <div className="app__spinner" role="status" aria-label="Loading" />
         )}
         {status === "invalid" && (
-          <p className="app__message">
-            Enter a valid WCA ID, e.g. 2015CAMP17.
-          </p>
+          <p className="app__message">Enter a valid WCA ID, e.g. 2015CAMP17.</p>
         )}
         {status === "error" && (
           <p className="app__message app__message--error">
