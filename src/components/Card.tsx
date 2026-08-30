@@ -1,13 +1,126 @@
 import type { CompetitorInfoDto } from "../lib/dto";
+import { flagEmoji } from "../lib/flag.util";
+import { formatResult } from "../lib/time.util";
+import { wcaEvents } from "../lib/wca.events";
+import "./Card.css";
 
 interface Props {
   competitor: CompetitorInfoDto;
 }
 
+type Tier = "bronze" | "silver" | "gold" | "legendary";
+
+const TIER_LABEL: Record<Tier, string> = {
+  bronze: "Rookie Cuber",
+  silver: "Skilled Cuber",
+  gold: "Elite Cuber",
+  legendary: "Legendary Cuber",
+};
+
+// Tiers set the card's rarity look and feel, driven by total medal count.
+const getTier = (totalMedals: number): Tier => {
+  if (totalMedals >= 50) return "legendary";
+  if (totalMedals >= 20) return "gold";
+  if (totalMedals >= 5) return "silver";
+  return "bronze";
+};
+
 export const Card = ({ competitor }: Props) => {
+  const { person, medals, records } = competitor;
+  const tier = getTier(medals.total);
+
+  const events = wcaEvents.filter(
+    (event) => competitor.personal_records[event.id],
+  );
+
   return (
-    <div>
-      <h2>{competitor.person.name}</h2>
+    <div className={`sc-card sc-card--${tier}`}>
+      <div className="sc-card__inner">
+        <header className="sc-card__header">
+          <span className="sc-card__tier">{TIER_LABEL[tier]}</span>
+          <span className="sc-card__wca-id">{person.wca_id}</span>
+        </header>
+
+        <div className="sc-card__portrait">
+          <img
+            className="sc-card__avatar"
+            src={person.avatar.url}
+            alt={`${person.name}'s avatar`}
+          />
+          <span className="sc-card__flag" title={person.country.name}>
+            {flagEmoji(person.country_iso2)}
+          </span>
+        </div>
+
+        <div className="sc-card__name-plate">
+          <h2 className="sc-card__name">{person.name}</h2>
+          <p className="sc-card__location">{person.location}</p>
+        </div>
+
+        <div className="sc-card__stats">
+          <Stat icon="🏆" label="Comps" value={competitor.competition_count} />
+          <Stat icon="🥇" label="Gold" value={medals.gold} />
+          <Stat icon="🥈" label="Silver" value={medals.silver} />
+          <Stat icon="🥉" label="Bronze" value={medals.bronze} />
+          <Stat
+            icon="📜"
+            label="Records"
+            value={records.total}
+            title={`National ${records.national} · Continental ${records.continental} · World ${records.world}`}
+          />
+          <Stat icon="⏱️" label="Solves" value={competitor.total_solves} />
+        </div>
+
+        {events.length > 0 && (
+          <div className="sc-card__events">
+            <div className="sc-card__events-header">
+              <span>Event</span>
+              <span>Single</span>
+              <span>Average</span>
+            </div>
+            <div className="sc-card__events-list">
+              {events.map((event) => {
+                const pr = competitor.personal_records[event.id];
+                return (
+                  <div className="sc-card__event-row" key={event.id}>
+                    <span className="sc-card__event-name">
+                      <span aria-hidden="true">{event.icon}</span>
+                      {event.name}
+                    </span>
+                    <span className="sc-card__event-time">
+                      {pr.single
+                        ? formatResult(pr.single.best, event.id, "single")
+                        : "-"}
+                    </span>
+                    <span className="sc-card__event-time">
+                      {pr.average
+                        ? formatResult(pr.average.best, event.id, "average")
+                        : "-"}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
+
+interface StatProps {
+  icon: string;
+  label: string;
+  value: number;
+  title?: string;
+}
+
+const Stat = ({ icon, label, value, title }: StatProps) => (
+  <div className="sc-card__stat" title={title}>
+    <span className="sc-card__stat-icon" aria-hidden="true">
+      {icon}
+    </span>
+    <span className="sc-card__stat-value">{value}</span>
+    <span className="sc-card__stat-label">{label}</span>
+  </div>
+);

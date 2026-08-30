@@ -13,7 +13,7 @@ interface CompetitorInfoPersonDto {
   delegate_status: string;
   email: string;
   class: string;
-  teams: any[];
+  teams: unknown[];
   avatar: {
     id: number;
     status: string;
@@ -31,26 +31,20 @@ interface CompetitorInfoPersonDto {
   id: string;
 }
 
+interface CompetitorInfoRecordResultDto {
+  id: number;
+  person_id: string;
+  event_id: string;
+  best: number;
+  world_rank: number;
+  continent_rank: number;
+  country_rank: number;
+}
+
 interface CompetitorInfoPersonalRecordsDto {
   [eventId: string]: {
-    single: {
-      id: number;
-      person_id: string;
-      event_id: string;
-      best: number;
-      world_rank: number;
-      continent_rank: number;
-      country_rank: number;
-    };
-    average: {
-      id: number;
-      person_id: string;
-      event_id: string;
-      best: number;
-      world_rank: number;
-      continent_rank: number;
-      country_rank: number;
-    };
+    single?: CompetitorInfoRecordResultDto;
+    average?: CompetitorInfoRecordResultDto;
   };
 }
 
