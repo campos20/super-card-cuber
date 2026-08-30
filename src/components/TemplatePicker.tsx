@@ -34,38 +34,32 @@ export const TemplatePicker = ({
       <span className="tp__label">Template</span>
       <div className="tp__row">
         {templates.map((template) => (
-          <button
+          <span
             key={template.id}
-            type="button"
             className={`tp__chip ${template.id === activeTemplateId ? "tp__chip--active" : ""}`}
-            onClick={() => onSelect(template)}
           >
-            <span
-              className={`tp__icon tp__icon--${template.layout}`}
-              aria-hidden="true"
-            />
-            {template.name}
-            {!template.builtin && (
+            <button
+              type="button"
+              className="tp__chip-select"
+              onClick={() => onSelect(template)}
+            >
               <span
-                role="button"
-                tabIndex={0}
-                aria-label={`Delete ${template.name} template`}
+                className={`tp__icon tp__icon--${template.layout}`}
+                aria-hidden="true"
+              />
+              {template.name}
+            </button>
+            {!template.builtin && (
+              <button
+                type="button"
                 className="tp__delete"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onDelete(template.id);
-                }}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") {
-                    e.stopPropagation();
-                    onDelete(template.id);
-                  }
-                }}
+                aria-label={`Delete ${template.name} template`}
+                onClick={() => onDelete(template.id)}
               >
                 ×
-              </span>
+              </button>
             )}
-          </button>
+          </span>
         ))}
 
         {isCreating ? (

@@ -40,7 +40,7 @@ const secondsToTime = (totalSeconds: number): string => {
   seconds -= min * 60;
 
   if (hour > 0) {
-    return `${hour}:${zfill(min, 2)}${zfill(seconds, 2)}`;
+    return `${hour}:${zfill(min, 2)}:${zfill(seconds, 2)}`;
   }
   return `${min}:${zfill(seconds, 2)}`;
 };

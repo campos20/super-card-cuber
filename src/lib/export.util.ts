@@ -126,7 +126,9 @@ export const downloadCardImage = async (
   link.href = url;
   link.download = fileName;
   link.click();
-  URL.revokeObjectURL(url);
+  // Revoking immediately can cancel the download in some browsers (notably
+  // Safari) before they've had a chance to start reading the blob URL.
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
 };
 
 export const copyCardImageToClipboard = async (

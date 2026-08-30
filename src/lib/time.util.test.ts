@@ -34,4 +34,9 @@ describe("formatResult", () => {
   it("decodes a packed 333mbf result into solved/attempted [time]", () => {
     expect(formatResult(860352600, "333mbf", "single")).toBe("13/13 [58:46]");
   });
+
+  it("decodes a packed 333mbf result whose attempt time is over an hour", () => {
+    // DD=90, TTTTT=03661 (1h 1m 1s), MM=00
+    expect(formatResult(900366100, "333mbf", "single")).toBe("9/9 [1:01:01]");
+  });
 });
