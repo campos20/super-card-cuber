@@ -29,9 +29,13 @@ const DEFAULT_HIDDEN_EVENTS = new Set(
   wcaEvents.filter((event) => event.id !== "333").map((event) => event.id),
 );
 
+const WCA_ID_QUERY_PARAM = "wcaId";
+const initialWcaId =
+  new URLSearchParams(window.location.search).get(WCA_ID_QUERY_PARAM) ?? "";
+
 export const App = () => {
   const cardRef = useRef<HTMLDivElement>(null);
-  const [competitorId, setCompetitorId] = useState("");
+  const [competitorId, setCompetitorId] = useState(initialWcaId);
   const [result, setResult] = useState<FetchResult | null>(null);
   const [isCustomizing, setIsCustomizing] = useState(false);
   const [hiddenStats, setHiddenStats] = useState<ReadonlySet<StatId>>(
@@ -58,6 +62,11 @@ export const App = () => {
       .then((data) => {
         if (cancelled) return;
         setResult({ competitorId, status: "loaded", data });
+
+        // Add query param to URL so that the card can be shared.
+        const url = new URL(window.location.href);
+        url.searchParams.set(WCA_ID_QUERY_PARAM, competitorId);
+        window.history.replaceState({}, "", url.toString());
       })
       .catch(() => {
         if (cancelled) return;
