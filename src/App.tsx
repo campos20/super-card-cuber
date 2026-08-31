@@ -30,12 +30,13 @@ const DEFAULT_HIDDEN_EVENTS = new Set(
 );
 
 const WCA_ID_QUERY_PARAM = "wcaId";
-const initialWcaId =
-  new URLSearchParams(window.location.search).get(WCA_ID_QUERY_PARAM) ?? "";
 
 export const App = () => {
   const cardRef = useRef<HTMLDivElement>(null);
-  const [competitorId, setCompetitorId] = useState(initialWcaId);
+  const [competitorId, setCompetitorId] = useState(
+    () =>
+      new URLSearchParams(window.location.search).get(WCA_ID_QUERY_PARAM) ?? "",
+  );
   const [result, setResult] = useState<FetchResult | null>(null);
   const [isCustomizing, setIsCustomizing] = useState(false);
   const [hiddenStats, setHiddenStats] = useState<ReadonlySet<StatId>>(

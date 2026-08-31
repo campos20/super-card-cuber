@@ -19,6 +19,7 @@ const enterWcaId = (value: string) => {
 describe("App", () => {
   beforeEach(() => {
     localStorage.clear();
+    window.history.replaceState({}, "", "/");
   });
 
   afterEach(() => {
