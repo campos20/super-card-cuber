@@ -30,12 +30,12 @@ jobs:
       - run: npm run lint
 
       - name: Test
-        run: npx jest --coverage --ci
+        run: npm run coverage
 
       - run: npm run build
 
       # Just a quick indicator on the PR itself - reads the json-summary
-      # report jest already produces, no README to keep in sync.
+      # report vitest already produces, no README to keep in sync.
       - name: Comment coverage on PR
         if: github.event_name == 'pull_request'
         uses: MishaKav/jest-coverage-comment@v1.0.29
