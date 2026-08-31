@@ -4,10 +4,21 @@ on:
   pull_request:
     branches: [main]
     types: [opened, synchronize, reopened]
+  workflow_dispatch:
+
+# Superseded runs on the same branch are pointless once a newer commit lands.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   test:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      # Needed for the coverage-comment step to post/update its PR comment.
+      pull-requests: write
+
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
@@ -17,5 +28,16 @@ jobs:
       - run: npm ci
       - run: npx prettier --check .
       - run: npm run lint
-      - run: npm run coverage
+
+      - name: Test
+        run: npx jest --coverage --ci
+
       - run: npm run build
+
+      # Just a quick indicator on the PR itself - reads the json-summary
+      # report jest already produces, no README to keep in sync.
+      - name: Comment coverage on PR
+        if: github.event_name == 'pull_request'
+        uses: MishaKav/jest-coverage-comment@v1.0.29
+        with:
+          coverage-summary-path: coverage/coverage-summary.json
